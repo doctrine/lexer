@@ -15,5 +15,10 @@
     },
     "autoload": {
         "psr-0": { "Doctrine\\Common\\Lexer\\": "lib/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     }
 }
