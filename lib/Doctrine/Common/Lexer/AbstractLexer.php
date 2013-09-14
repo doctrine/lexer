@@ -64,6 +64,20 @@ abstract class AbstractLexer
      */
     public $token;
 
+     /**
+      * A stack of input strings kept for error reporting.
+      *
+      * @var array
+      */
+     protected $inputStack;
+
+    /**
+     * A stack of lexers kept for error reporting.
+     *
+     * @var array
+     */
+     static protected $lexerStack;
+
     /**
      * Sets the input data to be tokenized.
      *
@@ -155,8 +169,13 @@ abstract class AbstractLexer
     {
         $this->peek = 0;
         $this->token = $this->lookahead;
-        $this->lookahead = (isset($this->tokens[$this->position]))
-            ? $this->tokens[$this->position++] : null;
+        if (isset($this->tokens[$this->position])) {
+            $this->lookahead = $this->tokens[$this->position++];
+        }
+        else {
+            $this->lookahead = null;
+            $this->finish();
+        }
 
         return $this->lookahead !== null;
     }
@@ -243,6 +262,37 @@ abstract class AbstractLexer
                 'position' => $match[1],
             );
         }
+        // Add the information kept for error reporting to the stacks.
+        self::pushLexer($this);
+        $this->inputStack[] = $input;
+    }
+
+    /**
+     * Removes the information kept for error reporting from the stacks.
+     */
+    protected function finish() {
+        self::popLexer();
+        array_pop($this->inputStack);
+    }
+
+    /**
+     * Put a lexer on the stack.
+     *
+     * @param AbstractLexer $lexer
+     *   The lexer to be saved.
+     */
+    static protected function pushLexer(AbstractLexer $lexer) {
+        self::$lexerStack[] = $lexer;
+    }
+
+    /**
+     * Remove and return the last lexer used.
+     *
+     * @return AbstractLexer
+     *   The last lexer used.
+     */
+    static public function popLexer() {
+        return array_pop(self::$lexerStack);
     }
 
     /**
@@ -265,6 +315,17 @@ abstract class AbstractLexer
         }
 
         return $token;
+    }
+
+    /**
+     * Get the original string read so far.
+     *
+     * @return
+     *   The original string as read so far.
+     */
+    public function getOriginal()
+    {
+        return substr(array_pop($this->inputStack), 0, $this->lookahead['position']);
     }
 
     /**
