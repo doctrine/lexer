@@ -171,10 +171,9 @@ abstract class AbstractLexer
         $this->token = $this->lookahead;
         if (isset($this->tokens[$this->position])) {
             $this->lookahead = $this->tokens[$this->position++];
-        }
-        else {
+        } else {
             $this->lookahead = null;
-            $this->finish();
+            $this->\finish();
         }
 
         return $this->lookahead !== null;
@@ -270,7 +269,8 @@ abstract class AbstractLexer
     /**
      * Removes the information kept for error reporting from the stacks.
      */
-    protected function finish() {
+    protected function finish()
+    {
         self::popLexer();
         array_pop($this->inputStack);
     }
@@ -281,7 +281,8 @@ abstract class AbstractLexer
      * @param AbstractLexer $lexer
      *   The lexer to be saved.
      */
-    static protected function pushLexer(AbstractLexer $lexer) {
+    static protected function pushLexer(AbstractLexer $lexer)
+    {
         self::$lexerStack[] = $lexer;
     }
 
@@ -291,7 +292,8 @@ abstract class AbstractLexer
      * @return AbstractLexer
      *   The last lexer used.
      */
-    static public function popLexer() {
+    static public function popLexer()
+    {
         return array_pop(self::$lexerStack);
     }
 
