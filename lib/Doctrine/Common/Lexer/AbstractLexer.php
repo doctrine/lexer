@@ -30,6 +30,13 @@ namespace Doctrine\Common\Lexer;
 abstract class AbstractLexer
 {
     /**
+     * Lexer original input string.
+     *
+     * @var string
+     */
+    private $input;
+
+    /**
      * Array of scanned tokens.
      *
      * @var array
@@ -76,7 +83,9 @@ abstract class AbstractLexer
      */
     public function setInput($input)
     {
+        $this->input  = $input;
         $this->tokens = array();
+
         $this->reset();
         $this->scan($input);
     }
@@ -114,6 +123,18 @@ abstract class AbstractLexer
     public function resetPosition($position = 0)
     {
         $this->position = $position;
+    }
+
+    /**
+     * Retrieve the original lexer's input until a given position. 
+     *
+     * @param integer $position
+     *
+     * @return string
+     */
+    public function getInputUntilPosition($position)
+    {
+        return substr($this->input, 0, $position);
     }
 
     /**
