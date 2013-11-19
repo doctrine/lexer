@@ -72,6 +72,13 @@ abstract class AbstractLexer
     public $token;
 
     /**
+     * The current input string.
+     *
+     * @var string
+     */
+    protected $input;
+
+    /**
      * Sets the input data to be tokenized.
      *
      * The Lexer is immediately reset and the new input tokenized.
@@ -87,6 +94,7 @@ abstract class AbstractLexer
         $this->tokens = array();
 
         $this->reset();
+        $this->input = $input;
         $this->scan($input);
     }
 
@@ -286,6 +294,16 @@ abstract class AbstractLexer
         }
 
         return $token;
+    }
+
+    /**
+     * Get the original string read so far.
+     *
+     * @return string
+     */
+    public function getOriginalUntilNow()
+    {
+        return substr($this->input, 0, $this->lookahead['position']);
     }
 
     /**
