@@ -247,8 +247,12 @@ abstract class AbstractLexer
         static $regex;
 
         if ( ! isset($regex)) {
-            $regex = '/(' . implode(')|(', $this->getCatchablePatterns()) . ')|'
-                   . implode('|', $this->getNonCatchablePatterns()) . '/i';
+            $regex = sprintf(
+                '/(%s)|%s/%s',
+                implode(')|(', $this->getCatchablePatterns()),
+                implode('|', $this->getNonCatchablePatterns()),
+                $this->getModifiers()
+            );
         }
 
         $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
@@ -286,6 +290,16 @@ abstract class AbstractLexer
         }
 
         return $token;
+    }
+
+    /**
+     * Regex modifiers
+     *
+     * @return string
+     */
+    protected function getModifiers()
+    {
+        return 'i';
     }
 
     /**
