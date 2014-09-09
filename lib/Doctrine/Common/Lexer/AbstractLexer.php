@@ -39,6 +39,12 @@ abstract class AbstractLexer
     /**
      * Array of scanned tokens.
      *
+     * Each token is an associative array containing three items:
+     *  - 'value'    : the string value of the token in the input string
+     *  - 'type'     : the type of the token (identifier, numeric, string, input
+     *                 parameter, none)
+     *  - 'position' : the position of the token in the input string
+     *
      * @var array
      */
     private $tokens = array();
@@ -164,13 +170,7 @@ abstract class AbstractLexer
     /**
      * Moves to the next token in the input string.
      *
-     * A token is an associative array containing three items:
-     *  - 'value'    : the string value of the token in the input string
-     *  - 'type'     : the type of the token (identifier, numeric, string, input
-     *                 parameter, none)
-     *  - 'position' : the position of the token in the input string
-     *
-     * @return array|null The next token; null if there is no more tokens left.
+     * @return boolean
      */
     public function moveNext()
     {
