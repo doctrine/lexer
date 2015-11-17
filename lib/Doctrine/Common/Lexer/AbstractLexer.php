@@ -269,6 +269,28 @@ abstract class AbstractLexer
             );
         }
     }
+    
+    /**
+     * Gets the string name for a given token.
+     * 
+     * @param integer $token
+     * 
+     * @return string
+     */
+    public function getTokenName($token)
+    {
+        $className = get_class($this);
+        $reflClass = new \ReflectionClass($className);
+        $constants = $reflClass->getConstants();
+
+        foreach ($constants as $name => $value) {
+            if ($value === $token) {
+                return $name;
+            }
+        }
+
+        return $token;
+    }
 
     /**
      * Gets the literal for a given token.
