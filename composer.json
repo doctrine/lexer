@@ -14,7 +14,7 @@
         "php": ">=5.3.2"
     },
     "autoload": {
-        "psr-0": { "Doctrine\\Common\\Lexer\\": "lib/" }
+        "psr-4": { "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer" }
     },
     "extra": {
         "branch-alias": {
