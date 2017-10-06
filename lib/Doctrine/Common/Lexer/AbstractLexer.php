@@ -132,7 +132,7 @@ abstract class AbstractLexer
     }
 
     /**
-     * Retrieve the original lexer's input until a given position. 
+     * Retrieve the original lexer's input until a given position.
      *
      * @param integer $position
      *
@@ -246,7 +246,7 @@ abstract class AbstractLexer
     {
         static $regex;
 
-        if ( ! isset($regex)) {
+        if (! isset($regex)) {
             $regex = sprintf(
                 '/(%s)|%s/%s',
                 implode(')|(', $this->getCatchablePatterns()),
