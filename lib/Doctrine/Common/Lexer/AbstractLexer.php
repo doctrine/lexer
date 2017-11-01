@@ -40,6 +40,7 @@ abstract class AbstractLexer
      * Array of scanned tokens.
      *
      * Each token is an associative array containing three items:
+     *  - 'index'    : the token index in the input string
      *  - 'value'    : the string value of the token in the input string
      *  - 'type'     : the type of the token (identifier, numeric, string, input
      *                 parameter, none)
@@ -258,15 +259,18 @@ abstract class AbstractLexer
         $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
         $matches = preg_split($regex, $input, -1, $flags);
 
+        $index = 0;
         foreach ($matches as $match) {
             // Must remain before 'value' assignment since it can change content
             $type = $this->getType($match[0]);
 
-            $this->tokens[] = array(
+            $this->tokens[$index] = array(
+                'index' => $index,
                 'value' => $match[0],
                 'type'  => $type,
                 'position' => $match[1],
             );
+            $index++;
         }
     }
 
