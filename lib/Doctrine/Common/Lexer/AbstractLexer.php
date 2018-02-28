@@ -68,6 +68,13 @@ abstract class AbstractLexer
     public $token;
 
     /**
+     * Composed regex for input parsing.
+     *
+     * @var string
+     */
+    private $regex;
+
+    /**
      * Sets the input data to be tokenized.
      *
      * The Lexer is immediately reset and the new input tokenized.
@@ -235,10 +242,8 @@ abstract class AbstractLexer
      */
     protected function scan($input)
     {
-        static $regex;
-
-        if (! isset($regex)) {
-            $regex = sprintf(
+        if (! isset($this->regex)) {
+            $this->regex = sprintf(
                 '/(%s)|%s/%s',
                 implode(')|(', $this->getCatchablePatterns()),
                 implode('|', $this->getNonCatchablePatterns()),
@@ -247,7 +252,7 @@ abstract class AbstractLexer
         }
 
         $flags   = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
-        $matches = preg_split($regex, $input, -1, $flags);
+        $matches = preg_split($this->regex, $input, -1, $flags);
 
         if ($matches === false) {
             // Work around https://bugs.php.net/78122
