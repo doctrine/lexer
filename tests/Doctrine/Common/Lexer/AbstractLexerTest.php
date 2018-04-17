@@ -43,6 +43,74 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testResetPeek()
+    {
+        $expectedTokens = array(
+            array(
+                'index' => 0,
+                'value' => 'price',
+                'type' => 'string',
+                'position' => 0,
+            ),
+            array(
+                'index' => 1,
+                'value' => '=',
+                'type' => 'operator',
+                'position' => 5,
+            ),
+            array(
+                'index' => 2,
+                'value' => 10,
+                'type' => 'int',
+                'position' => 6,
+            ),
+        );
+
+        $this->concreteLexer->setInput('price=10');
+
+        $this->assertEquals($expectedTokens[0], $this->concreteLexer->peek());
+        $this->assertEquals($expectedTokens[1], $this->concreteLexer->peek());
+        $this->concreteLexer->resetPeek();
+        $this->assertEquals($expectedTokens[0], $this->concreteLexer->peek());
+    }
+
+    public function testResetPosition()
+    {
+        $expectedTokens = array(
+            array(
+                'index' => 0,
+                'value' => 'price',
+                'type' => 'string',
+                'position' => 0,
+            ),
+            array(
+                'index' => 1,
+                'value' => '=',
+                'type' => 'operator',
+                'position' => 5,
+            ),
+            array(
+                'index' => 2,
+                'value' => 10,
+                'type' => 'int',
+                'position' => 6,
+            ),
+        );
+
+        $this->concreteLexer->setInput('price=10');
+        $this->assertNull($this->concreteLexer->lookahead);
+
+        $this->assertTrue($this->concreteLexer->moveNext());
+        $this->assertEquals($expectedTokens[0], $this->concreteLexer->lookahead);
+
+        $this->assertTrue($this->concreteLexer->moveNext());
+        $this->assertEquals($expectedTokens[1], $this->concreteLexer->lookahead);
+
+        $this->concreteLexer->resetPosition(0);
+
+        $this->assertTrue($this->concreteLexer->moveNext());
+        $this->assertEquals($expectedTokens[0], $this->concreteLexer->lookahead);
+    }
 
     /**
      * @dataProvider dataProvider
@@ -62,6 +130,25 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->concreteLexer->moveNext());
         $this->assertNull($this->concreteLexer->lookahead);
+    }
+
+
+    public function testSkipUntil()
+    {
+        $this->concreteLexer->setInput('price=10');
+
+        $this->assertTrue($this->concreteLexer->moveNext());
+        $this->concreteLexer->skipUntil('operator');
+
+        $this->assertEquals(
+            array(
+                'index' => 1,
+                'value' => '=',
+                'type' => 'operator',
+                'position' => 5,
+            ),
+            $this->concreteLexer->lookahead
+        );
     }
 
     /**
@@ -161,6 +248,7 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     public function testGetLiteral()
     {
         $this->assertSame('Doctrine\Tests\Common\Lexer\ConcreteLexer::INT', $this->concreteLexer->getLiteral('int'));
+        $this->assertSame('fake_token', $this->concreteLexer->getLiteral('fake_token'));
     }
 
     public function testIsA()
