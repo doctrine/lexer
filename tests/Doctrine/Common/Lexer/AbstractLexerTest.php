@@ -269,4 +269,21 @@ class AbstractLexerTest extends TestCase
         $this->assertTrue($this->concreteLexer->isA('<', 'operator'));
         $this->assertTrue($this->concreteLexer->isA('fake_text', 'string'));
     }
+
+    public function testAddCatchablePatternsToMutableLexer()
+    {
+        $mutableLexer = new MutableLexer();
+        $mutableLexer->addCatchablePattern('[a-z]');
+        $mutableLexer->setInput('one');
+        $token = $mutableLexer->glimpse();
+
+        $this->assertEquals('o', $token['value']);
+
+        $mutableLexer = new MutableLexer();
+        $mutableLexer->addCatchablePattern('[a-z]+');
+        $mutableLexer->setInput('one');
+        $token = $mutableLexer->glimpse();
+
+        $this->assertEquals('one', $token['value']);
+    }
 }
