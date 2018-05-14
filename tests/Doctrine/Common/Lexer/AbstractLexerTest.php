@@ -21,19 +21,16 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
                 'price=10',
                 array(
                     array(
-                        'index' => 0,
                         'value' => 'price',
                         'type' => 'string',
                         'position' => 0,
                     ),
                     array(
-                        'index' => 1,
                         'value' => '=',
                         'type' => 'operator',
                         'position' => 5,
                     ),
                     array(
-                        'index' => 2,
                         'value' => 10,
                         'type' => 'int',
                         'position' => 6,
@@ -47,19 +44,16 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     {
         $expectedTokens = array(
             array(
-                'index' => 0,
                 'value' => 'price',
                 'type' => 'string',
                 'position' => 0,
             ),
             array(
-                'index' => 1,
                 'value' => '=',
                 'type' => 'operator',
                 'position' => 5,
             ),
             array(
-                'index' => 2,
                 'value' => 10,
                 'type' => 'int',
                 'position' => 6,
@@ -78,19 +72,16 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     {
         $expectedTokens = array(
             array(
-                'index' => 0,
                 'value' => 'price',
                 'type' => 'string',
                 'position' => 0,
             ),
             array(
-                'index' => 1,
                 'value' => '=',
                 'type' => 'operator',
                 'position' => 5,
             ),
             array(
-                'index' => 2,
                 'value' => 10,
                 'type' => 'int',
                 'position' => 6,
@@ -142,7 +133,6 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                'index' => 1,
                 'value' => '=',
                 'type' => 'operator',
                 'position' => 5,
