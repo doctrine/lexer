@@ -1,8 +1,14 @@
 {
     "name": "doctrine/lexer",
     "type": "library",
-    "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
-    "keywords": ["lexer", "parser"],
+    "description": "PHP Doctrine Lexer parser library that can be used in Top-Down, Recursive Descent Parsers.",
+    "keywords": [
+        "php",
+        "parser",
+        "lexer",
+        "annotations",
+        "docblock"
+    ],
     "homepage": "http://www.doctrine-project.org",
     "license": "MIT",
     "authors": [
