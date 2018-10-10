@@ -30,7 +30,7 @@ and implement the following three abstract methods.
      * @param string $value
      * @return integer
      */
-    abstract protected function getType(&amp;$value);
+    abstract protected function getType(&$value);
 
 These methods define the `lexical <http://en.wikipedia.org/wiki/Lexical_analysis>`_
 catchable and non-catchable patterns and a method for returning the
