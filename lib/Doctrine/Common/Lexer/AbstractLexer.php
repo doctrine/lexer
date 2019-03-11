@@ -66,14 +66,14 @@ abstract class AbstractLexer
     /**
      * The next token in the input.
      *
-     * @var array
+     * @var array|null
      */
     public $lookahead;
 
     /**
      * The last matched/seen token.
      *
-     * @var array
+     * @var array|null
      */
     public $token;
 
@@ -199,8 +199,8 @@ abstract class AbstractLexer
     /**
      * Checks if given value is identical to the given token.
      *
-     * @param mixed   $value
-     * @param integer $token
+     * @param mixed          $value
+     * @param integer|string $token
      *
      * @return boolean
      */
@@ -273,9 +273,9 @@ abstract class AbstractLexer
     /**
      * Gets the literal for a given token.
      *
-     * @param integer $token
+     * @param integer|string $token
      *
-     * @return string
+     * @return integer|string
      */
     public function getLiteral($token)
     {
@@ -321,7 +321,7 @@ abstract class AbstractLexer
      *
      * @param string $value
      *
-     * @return integer
+     * @return integer|string|null
      */
     abstract protected function getType(&$value);
 }

@@ -106,8 +106,8 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param $input
-     * @param $expectedTokens
+     * @param string $input
+     * @param array $expectedTokens
      */
     public function testMoveNext($input, $expectedTokens)
     {
@@ -144,8 +144,8 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param $input
-     * @param $expectedTokens
+     * @param string $input
+     * @param array $expectedTokens
      */
     public function testPeek($input, $expectedTokens)
     {
@@ -160,8 +160,8 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param $input
-     * @param $expectedTokens
+     * @param string $input
+     * @param array $expectedTokens
      */
     public function testGlimpse($input, $expectedTokens)
     {
@@ -185,9 +185,9 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider inputUntilPositionDataProvider
      *
-     * @param $input
-     * @param $position
-     * @param $expectedInput
+     * @param string $input
+     * @param int $position
+     * @param string $expectedInput
      */
     public function testGetInputUntilPosition($input, $position, $expectedInput)
     {
@@ -199,8 +199,8 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param $input
-     * @param $expectedTokens
+     * @param string $input
+     * @param array $expectedTokens
      */
     public function testIsNextToken($input, $expectedTokens)
     {
@@ -216,8 +216,8 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param $input
-     * @param $expectedTokens
+     * @param string $input
+     * @param array $expectedTokens
      */
     public function testIsNextTokenAny($input, $expectedTokens)
     {
