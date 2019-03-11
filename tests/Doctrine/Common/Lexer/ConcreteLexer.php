@@ -39,7 +39,7 @@ class ConcreteLexer extends AbstractLexer
             return 'string';
         }
 
-        return;
+        return null;
     }
 
     protected function getModifiers()

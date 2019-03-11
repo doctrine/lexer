@@ -47,3 +47,8 @@ jobs:
         -   stage: Test
             php: 7.2
             env: COVERAGE=yes
+
+        -   stage: Code Quality
+            env: PHPSTAN
+            php: 7.3
+            script: vendor/bin/phpstan analyse
