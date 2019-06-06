@@ -258,6 +258,11 @@ abstract class AbstractLexer
         $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
         $matches = preg_split($regex, $input, -1, $flags);
 
+        if (false === $matches) {
+            // Work around https://bugs.php.net/78122
+            $matches = array(array($input, 0));
+        }
+
         foreach ($matches as $match) {
             // Must remain before 'value' assignment since it can change content
             $type = $this->getType($match[0]);

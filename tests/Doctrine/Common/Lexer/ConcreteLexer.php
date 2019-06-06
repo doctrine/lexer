@@ -41,4 +41,9 @@ class ConcreteLexer extends AbstractLexer
 
         return;
     }
+
+    protected function getModifiers()
+    {
+        return parent::getModifiers().'u';
+    }
 }

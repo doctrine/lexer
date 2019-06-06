@@ -123,7 +123,6 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->concreteLexer->lookahead);
     }
 
-
     public function testSkipUntil()
     {
         $this->concreteLexer->setInput('price=10');
@@ -136,6 +135,22 @@ class AbstractLexerTest extends \PHPUnit_Framework_TestCase
                 'value' => '=',
                 'type' => 'operator',
                 'position' => 5,
+            ),
+            $this->concreteLexer->lookahead
+        );
+    }
+
+    public function testUtf8Mismatch()
+    {
+        $this->concreteLexer->setInput("\xE9=10");
+
+        $this->assertTrue($this->concreteLexer->moveNext());
+
+        $this->assertEquals(
+            array(
+                'value' => "\xE9=10",
+                'type' => 'string',
+                'position' => 0,
             ),
             $this->concreteLexer->lookahead
         );
