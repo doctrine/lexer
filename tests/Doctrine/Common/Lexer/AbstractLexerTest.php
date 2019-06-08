@@ -2,14 +2,16 @@
 
 namespace Doctrine\Tests\Common\Lexer;
 
-class AbstractLexerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AbstractLexerTest extends TestCase
 {
     /**
      * @var ConcreteLexer
      */
     private $concreteLexer;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->concreteLexer = new ConcreteLexer();
     }

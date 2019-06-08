@@ -20,7 +20,7 @@
         "php": "^7.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.5"
+        "phpunit/phpunit": "^8.2"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer" }
