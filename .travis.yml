@@ -52,3 +52,8 @@ jobs:
             env: PHPSTAN
             php: 7.3
             script: vendor/bin/phpstan analyse
+
+        -   stage: Code Quality
+            env: PHPCS
+            php: 7.2
+            script: vendor/bin/phpcs

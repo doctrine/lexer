@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Tests\Common\Lexer;
 
 use PHPUnit\Framework\TestCase;
+use function array_map;
+use function count;
 
 class AbstractLexerTest extends TestCase
 {
-    /**
-     * @var ConcreteLexer
-     */
+    /** @var ConcreteLexer */
     private $concreteLexer;
 
     public function setUp() : void
@@ -18,49 +20,49 @@ class AbstractLexerTest extends TestCase
 
     public function dataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'price=10',
-                array(
-                    array(
+                [
+                    [
                         'value' => 'price',
                         'type' => 'string',
                         'position' => 0,
-                    ),
-                    array(
+                    ],
+                    [
                         'value' => '=',
                         'type' => 'operator',
                         'position' => 5,
-                    ),
-                    array(
+                    ],
+                    [
                         'value' => 10,
                         'type' => 'int',
                         'position' => 6,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function testResetPeek()
     {
-        $expectedTokens = array(
-            array(
+        $expectedTokens = [
+            [
                 'value' => 'price',
                 'type' => 'string',
                 'position' => 0,
-            ),
-            array(
+            ],
+            [
                 'value' => '=',
                 'type' => 'operator',
                 'position' => 5,
-            ),
-            array(
+            ],
+            [
                 'value' => 10,
                 'type' => 'int',
                 'position' => 6,
-            ),
-        );
+            ],
+        ];
 
         $this->concreteLexer->setInput('price=10');
 
@@ -72,23 +74,23 @@ class AbstractLexerTest extends TestCase
 
     public function testResetPosition()
     {
-        $expectedTokens = array(
-            array(
+        $expectedTokens = [
+            [
                 'value' => 'price',
                 'type' => 'string',
                 'position' => 0,
-            ),
-            array(
+            ],
+            [
                 'value' => '=',
                 'type' => 'operator',
                 'position' => 5,
-            ),
-            array(
+            ],
+            [
                 'value' => 10,
                 'type' => 'int',
                 'position' => 6,
-            ),
-        );
+            ],
+        ];
 
         $this->concreteLexer->setInput('price=10');
         $this->assertNull($this->concreteLexer->lookahead);
@@ -106,10 +108,10 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param string $input
-     * @param array $expectedTokens
+     * @param array  $expectedTokens
+     *
+     * @dataProvider dataProvider
      */
     public function testMoveNext($input, $expectedTokens)
     {
@@ -133,11 +135,11 @@ class AbstractLexerTest extends TestCase
         $this->concreteLexer->skipUntil('operator');
 
         $this->assertEquals(
-            array(
+            [
                 'value' => '=',
                 'type' => 'operator',
                 'position' => 5,
-            ),
+            ],
             $this->concreteLexer->lookahead
         );
     }
@@ -149,20 +151,20 @@ class AbstractLexerTest extends TestCase
         $this->assertTrue($this->concreteLexer->moveNext());
 
         $this->assertEquals(
-            array(
+            [
                 'value' => "\xE9=10",
                 'type' => 'string',
                 'position' => 0,
-            ),
+            ],
             $this->concreteLexer->lookahead
         );
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param string $input
-     * @param array $expectedTokens
+     * @param array  $expectedTokens
+     *
+     * @dataProvider dataProvider
      */
     public function testPeek($input, $expectedTokens)
     {
@@ -175,10 +177,10 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param string $input
-     * @param array $expectedTokens
+     * @param array  $expectedTokens
+     *
+     * @dataProvider dataProvider
      */
     public function testGlimpse($input, $expectedTokens)
     {
@@ -194,17 +196,17 @@ class AbstractLexerTest extends TestCase
 
     public function inputUntilPositionDataProvider()
     {
-        return array(
-            array('price=10', 5, 'price'),
-        );
+        return [
+            ['price=10', 5, 'price'],
+        ];
     }
 
     /**
-     * @dataProvider inputUntilPositionDataProvider
-     *
      * @param string $input
-     * @param int $position
+     * @param int    $position
      * @param string $expectedInput
+     *
+     * @dataProvider inputUntilPositionDataProvider
      */
     public function testGetInputUntilPosition($input, $position, $expectedInput)
     {
@@ -214,10 +216,10 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param string $input
-     * @param array $expectedTokens
+     * @param array  $expectedTokens
+     *
+     * @dataProvider dataProvider
      */
     public function testIsNextToken($input, $expectedTokens)
     {
@@ -231,14 +233,14 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param string $input
-     * @param array $expectedTokens
+     * @param array  $expectedTokens
+     *
+     * @dataProvider dataProvider
      */
     public function testIsNextTokenAny($input, $expectedTokens)
     {
-        $allTokenTypes = array_map(function ($token) {
+        $allTokenTypes = array_map(static function ($token) {
             return $token['type'];
         }, $expectedTokens);
 
@@ -246,7 +248,7 @@ class AbstractLexerTest extends TestCase
 
         $this->concreteLexer->moveNext();
         for ($i = 0; $i < count($expectedTokens); $i++) {
-            $this->assertTrue($this->concreteLexer->isNextTokenAny(array($expectedTokens[$i]['type'])));
+            $this->assertTrue($this->concreteLexer->isNextTokenAny([$expectedTokens[$i]['type']]));
             $this->assertTrue($this->concreteLexer->isNextTokenAny($allTokenTypes));
             $this->concreteLexer->moveNext();
         }

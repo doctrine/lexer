@@ -21,7 +21,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8.2",
-        "phpstan/phpstan": "^0.11.8"
+        "phpstan/phpstan": "^0.11.8",
+        "doctrine/coding-standard": "^6.0"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer" }

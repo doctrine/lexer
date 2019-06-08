@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset>
+    <arg name="basepath" value="."/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="80"/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="colors" />
+
+    <!-- Ignore warnings and show progress of the run -->
+    <arg value="np"/>
+
+    <file>lib</file>
+    <file>tests</file>
+
+    <rule ref="Doctrine">
+        <!-- Traversable type hints often end up as mixed[], so we skip them for now -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification" />
+
+        <!-- Will cause BC breaks to method signatures - disabled for now -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint" />
+
+        <!-- Disabled to avoid class renaming - to be handled in a separate PR -->
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming" />
+    </rule>
+</ruleset>
