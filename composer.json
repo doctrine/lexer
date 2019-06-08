@@ -20,9 +20,9 @@
         "php": "^7.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.2",
+        "doctrine/coding-standard": "^6.0",
         "phpstan/phpstan": "^0.11.8",
-        "doctrine/coding-standard": "^6.0"
+        "phpunit/phpunit": "^8.2"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer" }
@@ -34,5 +34,8 @@
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
