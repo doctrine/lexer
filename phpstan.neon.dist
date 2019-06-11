@@ -1,0 +1,5 @@
+parameters:
+  level: 7
+  paths:
+    - %rootDir%/../../../lib
+    - %rootDir%/../../../tests

@@ -1,0 +1,59 @@
+dist: xenial
+sudo: false
+language: php
+
+php:
+    - 7.2
+    - 7.3
+    - 7.4snapshot
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+before_install:
+    - |
+        if [ "x$COVERAGE" != "xyes" ]; then
+          mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || true
+        fi
+    - travis_retry composer self-update
+
+install: travis_retry composer update --prefer-dist
+
+before_script:
+    - |
+        if [ "x$COVERAGE" == "xyes" ] && [[ ! $(php -m | grep -si xdebug) ]]; then
+          echo "xdebug is required for coverage"
+          exit 1
+        fi
+script:
+    - |
+        if [ "x$COVERAGE" == "xyes" ]; then
+           ./vendor/bin/phpunit --coverage-clover clover.xml
+        else
+           ./vendor/bin/phpunit
+        fi
+after_script:
+    - |
+        if [ "x$COVERAGE" == "xyes" ]; then
+          wget https://github.com/scrutinizer-ci/ocular/releases/download/1.5.2/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover clover.xml
+        fi
+jobs:
+    allow_failures:
+        -   php: 7.4snapshot
+
+    include:
+        -   stage: Test
+            php: 7.2
+            env: COVERAGE=yes
+
+        -   stage: Code Quality
+            env: PHPSTAN
+            php: 7.3
+            script: vendor/bin/phpstan analyse
+
+        -   stage: Code Quality
+            env: PHPCS
+            php: 7.2
+            script: vendor/bin/phpcs

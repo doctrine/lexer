@@ -17,10 +17,12 @@
         {"name": "Johannes Schmitt", "email": "schmittjoh@gmail.com"}
     ],
     "require": {
-        "php": ">=5.3.2"
+        "php": "^7.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.5"
+        "doctrine/coding-standard": "^6.0",
+        "phpstan/phpstan": "^0.11.8",
+        "phpunit/phpunit": "^8.2"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer" }
@@ -32,5 +34,8 @@
         "branch-alias": {
             "dev-master": "1.1.x-dev"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
