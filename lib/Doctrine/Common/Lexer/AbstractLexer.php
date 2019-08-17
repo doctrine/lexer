@@ -316,8 +316,9 @@ abstract class AbstractLexer
     public function isCatchedByKey($value, $key)
     {
         if(!isset($this->getCatchablePatterns()[$key]) || !$value || !$this->input)
+        {
             return false;
-
+        }
 
         $flags   = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
         $regex = sprintf('/(%s)/%s', $this->getCatchablePatterns()[$key], $this->getModifiers());
