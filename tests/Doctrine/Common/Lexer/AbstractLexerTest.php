@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Doctrine\Tests\Common\Lexer;
 
 use PHPUnit\Framework\TestCase;
+use const LC_ALL;
 use function array_map;
 use function count;
+use function setlocale;
 
 class AbstractLexerTest extends TestCase
 {
@@ -290,29 +292,20 @@ class AbstractLexerTest extends TestCase
     public function testMarkerAnnotationLocaleTr() : void
     {
         setlocale(LC_ALL, 'tr_TR.utf8', 'tr_TR');
-
         $mutableLexer = new MutableLexer();
-
-        $mutableLexer->addCatchablePattern( '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*');
-        $mutableLexer->addCatchablePattern( '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?');
-        $mutableLexer->addCatchablePattern( '"(?:""|[^"])*+"');
-
+        $mutableLexer->addCatchablePattern('[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*');
+        $mutableLexer->addCatchablePattern('(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?');
+        $mutableLexer->addCatchablePattern('"(?:""|[^"])*+"');
         $mutableLexer->setInput('@ODM\Id');
 
         self::assertNull($mutableLexer->token);
         self::assertNull($mutableLexer->lookahead);
-
         self::assertTrue($mutableLexer->moveNext());
         self::assertNull($mutableLexer->token);
         self::assertEquals('@', $mutableLexer->lookahead['value']);
-
-
-
         self::assertTrue($mutableLexer->moveNext());
         self::assertEquals('@', $mutableLexer->token['value']);
         self::assertEquals('ODM\Id', $mutableLexer->lookahead['value']);
-
         setlocale(LC_ALL, null);
     }
-
 }
