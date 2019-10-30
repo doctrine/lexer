@@ -20,6 +20,14 @@ class AbstractLexerTest extends TestCase
         $this->concreteLexer = new ConcreteLexer();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown() : void
+    {
+        setlocale(LC_ALL, null);
+    }
+
     public function dataProvider()
     {
         return [
@@ -306,6 +314,5 @@ class AbstractLexerTest extends TestCase
         self::assertTrue($mutableLexer->moveNext());
         self::assertEquals('@', $mutableLexer->token['value']);
         self::assertEquals('ODM\Id', $mutableLexer->lookahead['value']);
-        setlocale(LC_ALL, null);
     }
 }
