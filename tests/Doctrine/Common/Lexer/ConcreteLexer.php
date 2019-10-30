@@ -46,5 +46,4 @@ class ConcreteLexer extends AbstractLexer
 
         return null;
     }
-
 }
