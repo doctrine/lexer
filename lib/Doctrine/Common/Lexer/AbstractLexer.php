@@ -323,7 +323,7 @@ abstract class AbstractLexer
         $regex = sprintf('/(%s)/%s', $this->getCatchablePatterns()[$key], $this->getModifiers());
         $matches = preg_split($regex, $this->input, -1, $flags);
 
-        return count($matches) > 0;
+        return $matches && count($matches) > 0;
     }
 
     /**
