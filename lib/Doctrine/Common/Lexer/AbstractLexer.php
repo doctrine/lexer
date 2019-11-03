@@ -307,16 +307,15 @@ abstract class AbstractLexer
      * Checks if given value was catched using getCatchablePatterns key
      *
      * @example getCatchablePatterns: ['[a-z]']
-     *          => isCatchedByKey('a', 0): true
+     *          => isCaughtByKey('a', 0): true
      *
      * @example getCatchablePatterns: ['some_key' => '[a-z]']
-     *          => isCatchedByKey('c', 'some_key'): true
+     *          => isCaughtByKey('c', 'some_key'): true
      * @return bool
      */
-    public function isCatchedByKey($value, $key)
+    public function isCaughtByKey($value, $key)
     {
-        if(!isset($this->getCatchablePatterns()[$key]) || !$value || !$this->input)
-        {
+        if (!isset($this->getCatchablePatterns()[$key]) || !$value || !$this->input) {
             return false;
         }
 
