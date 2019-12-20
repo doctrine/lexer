@@ -4,7 +4,7 @@ language: php
 php:
     - 7.2
     - 7.3
-    - 7.4snapshot
+    - 7.4
 
 cache:
     directories:
@@ -39,9 +39,6 @@ after_script:
           php ocular.phar code-coverage:upload --format=php-clover clover.xml
         fi
 jobs:
-    allow_failures:
-        -   php: 7.4snapshot
-
     include:
         -   stage: Test
             php: 7.2
