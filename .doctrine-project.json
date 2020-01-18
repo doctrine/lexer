@@ -5,15 +5,27 @@
     "docsSlug": "doctrine-lexer",
     "versions": [
         {
-            "name": "1.0",
-            "branchName": "1.0",
-            "slug": "1.0",
+            "name": "1.2",
+            "branchName": "1.2.x",
+            "slug": "1.2",
             "current": true,
             "maintained": true,
             "aliases": [
                 "current",
                 "stable"
             ]
+        },
+        {
+            "name": "1.1",
+            "branchName": "1.1",
+            "slug": "1.1",
+            "maintained": false
+        },
+        {
+            "name": "1.0",
+            "branchName": "1.0",
+            "slug": "1.0",
+            "maintained": false
         },
         {
             "name": "master",
