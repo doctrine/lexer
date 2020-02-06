@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Doctrine\Tests\Common\Lexer;
 
 use PHPUnit\Framework\TestCase;
-use const LC_ALL;
 use function array_map;
 use function count;
 use function setlocale;
+use const LC_ALL;
 
 class AbstractLexerTest extends TestCase
 {
@@ -20,15 +20,12 @@ class AbstractLexerTest extends TestCase
         $this->concreteLexer = new ConcreteLexer();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function tearDown() : void
     {
         setlocale(LC_ALL, null);
     }
 
-    public function dataProvider()
+    public function dataProvider() : array
     {
         return [
             [
@@ -204,7 +201,7 @@ class AbstractLexerTest extends TestCase
         $this->assertNull($this->concreteLexer->peek());
     }
 
-    public function inputUntilPositionDataProvider()
+    public function inputUntilPositionDataProvider() : array
     {
         return [
             ['price=10', 5, 'price'],
