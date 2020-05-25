@@ -39,10 +39,18 @@ after_script:
           php ocular.phar code-coverage:upload --format=php-clover clover.xml
         fi
 jobs:
+    allow_failures:
+        - php: nightly
+
     include:
         -   stage: Test
             php: 7.2
             env: COVERAGE=yes
+
+        -   stage: Test
+            php: nightly
+            before_install:
+                - composer config platform.php 7.4.99
 
         -   stage: Code Quality
             env: PHPSTAN
