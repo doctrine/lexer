@@ -5,25 +5,24 @@ declare(strict_types=1);
 namespace Doctrine\Tests\Common\Lexer;
 
 use PHPUnit\Framework\TestCase;
-use const LC_ALL;
+
 use function array_map;
 use function count;
 use function setlocale;
+
+use const LC_ALL;
 
 class AbstractLexerTest extends TestCase
 {
     /** @var ConcreteLexer */
     private $concreteLexer;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->concreteLexer = new ConcreteLexer();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function tearDown() : void
+    public function tearDown(): void
     {
         setlocale(LC_ALL, null);
     }
@@ -297,7 +296,7 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals('one', $token['value']);
     }
 
-    public function testMarkerAnnotationLocaleTr() : void
+    public function testMarkerAnnotationLocaleTr(): void
     {
         setlocale(LC_ALL, 'tr_TR.utf8', 'tr_TR');
         $mutableLexer = new MutableLexer();
