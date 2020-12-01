@@ -37,7 +37,8 @@ abstract class AbstractLexer
      *                 parameter, none)
      *  - 'position' : the position of the token in the input string
      *
-     * @var array
+     * @var mixed[][]
+     * @psalm-var list<array{value: string, type: string|int|null, position: int}>
      */
     private $tokens = [];
 
@@ -58,14 +59,16 @@ abstract class AbstractLexer
     /**
      * The next token in the input.
      *
-     * @var array|null
+     * @var mixed[]|null
+     * @psalm-var array{value: string, type: string|int|null, position: int}|null
      */
     public $lookahead;
 
     /**
      * The last matched/seen token.
      *
-     * @var array|null
+     * @var mixed[]|null
+     * @psalm-var array{value: string, type: string|int|null, position: int}|null
      */
     public $token;
 
@@ -157,7 +160,7 @@ abstract class AbstractLexer
     /**
      * Checks whether any of the given tokens matches the current lookahead.
      *
-     * @param array $tokens
+     * @param string[] $tokens
      *
      * @return bool
      */
@@ -211,7 +214,9 @@ abstract class AbstractLexer
     /**
      * Moves the lookahead token forward.
      *
-     * @return array|null The next token or NULL if there are no more tokens ahead.
+     * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
+     *
+     * @psalm-return array{value: string, type: string|int|null, position: int}|null
      */
     public function peek()
     {
@@ -225,7 +230,9 @@ abstract class AbstractLexer
     /**
      * Peeks at the next token, returns it and immediately resets the peek.
      *
-     * @return array|null The next token or NULL if there are no more tokens ahead.
+     * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
+     *
+     * @psalm-return array{value: string, type: string|int|null, position: int}|null
      */
     public function glimpse()
     {
@@ -308,14 +315,14 @@ abstract class AbstractLexer
     /**
      * Lexical catchable patterns.
      *
-     * @return array
+     * @return string[]
      */
     abstract protected function getCatchablePatterns();
 
     /**
      * Lexical non-catchable patterns.
      *
-     * @return array
+     * @return string[]
      */
     abstract protected function getNonCatchablePatterns();
 

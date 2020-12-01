@@ -14,6 +14,9 @@ class ConcreteLexer extends AbstractLexer
 {
     public const INT = 'int';
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getCatchablePatterns()
     {
         return [
@@ -23,6 +26,9 @@ class ConcreteLexer extends AbstractLexer
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getNonCatchablePatterns()
     {
         return [
@@ -31,6 +37,9 @@ class ConcreteLexer extends AbstractLexer
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getType(&$value)
     {
         if (is_numeric($value)) {
@@ -46,7 +55,5 @@ class ConcreteLexer extends AbstractLexer
         if (is_string($value)) {
             return 'string';
         }
-
-        return null;
     }
 }
