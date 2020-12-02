@@ -11,10 +11,7 @@ class MutableLexer extends AbstractLexer
     /** @var string[] */
     private $catchablePatterns = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function addCatchablePattern($pattern)
+    public function addCatchablePattern(string $pattern): void
     {
         $this->catchablePatterns[] = $pattern;
     }
