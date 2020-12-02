@@ -1,6 +1,6 @@
 # Doctrine Lexer
 
-Build Status: [![Build Status](https://travis-ci.org/doctrine/lexer.svg?branch=master)](https://travis-ci.org/doctrine/lexer)
+[![Build Status](https://github.com/doctrine/lexer/workflows/Continuous%20Integration/badge.svg)](https://github.com/doctrine/lexer/actions)
 
 Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.
 

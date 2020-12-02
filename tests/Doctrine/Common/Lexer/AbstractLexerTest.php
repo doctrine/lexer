@@ -5,30 +5,32 @@ declare(strict_types=1);
 namespace Doctrine\Tests\Common\Lexer;
 
 use PHPUnit\Framework\TestCase;
-use const LC_ALL;
+
 use function array_map;
 use function count;
 use function setlocale;
+
+use const LC_ALL;
 
 class AbstractLexerTest extends TestCase
 {
     /** @var ConcreteLexer */
     private $concreteLexer;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->concreteLexer = new ConcreteLexer();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function tearDown() : void
+    public function tearDown(): void
     {
         setlocale(LC_ALL, null);
     }
 
-    public function dataProvider()
+    /**
+     * @psalm-return list<array{string, list<array{value: string|int, type: string, position: int}>}>
+     */
+    public function dataProvider(): array
     {
         return [
             [
@@ -54,7 +56,7 @@ class AbstractLexerTest extends TestCase
         ];
     }
 
-    public function testResetPeek()
+    public function testResetPeek(): void
     {
         $expectedTokens = [
             [
@@ -82,7 +84,7 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals($expectedTokens[0], $this->concreteLexer->peek());
     }
 
-    public function testResetPosition()
+    public function testResetPosition(): void
     {
         $expectedTokens = [
             [
@@ -118,12 +120,10 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @param string $input
-     * @param array  $expectedTokens
-     *
+     * @psalm-param list<array{value: string|int, type: string, position: int}>  $expectedTokens
      * @dataProvider dataProvider
      */
-    public function testMoveNext($input, $expectedTokens)
+    public function testMoveNext(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
         $this->assertNull($this->concreteLexer->lookahead);
@@ -137,7 +137,7 @@ class AbstractLexerTest extends TestCase
         $this->assertNull($this->concreteLexer->lookahead);
     }
 
-    public function testSkipUntil()
+    public function testSkipUntil(): void
     {
         $this->concreteLexer->setInput('price=10');
 
@@ -154,7 +154,7 @@ class AbstractLexerTest extends TestCase
         );
     }
 
-    public function testUtf8Mismatch()
+    public function testUtf8Mismatch(): void
     {
         $this->concreteLexer->setInput("\xE9=10");
 
@@ -171,12 +171,10 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @param string $input
-     * @param array  $expectedTokens
-     *
+     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
      * @dataProvider dataProvider
      */
-    public function testPeek($input, $expectedTokens)
+    public function testPeek(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
         foreach ($expectedTokens as $expectedToken) {
@@ -187,12 +185,10 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @param string $input
-     * @param array  $expectedTokens
-     *
+     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
      * @dataProvider dataProvider
      */
-    public function testGlimpse($input, $expectedTokens)
+    public function testGlimpse(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
 
@@ -204,7 +200,10 @@ class AbstractLexerTest extends TestCase
         $this->assertNull($this->concreteLexer->peek());
     }
 
-    public function inputUntilPositionDataProvider()
+    /**
+     * @psalm-return list<array{string, int, string}>
+     */
+    public function inputUntilPositionDataProvider(): array
     {
         return [
             ['price=10', 5, 'price'],
@@ -212,26 +211,23 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @param string $input
-     * @param int    $position
-     * @param string $expectedInput
-     *
      * @dataProvider inputUntilPositionDataProvider
      */
-    public function testGetInputUntilPosition($input, $position, $expectedInput)
-    {
+    public function testGetInputUntilPosition(
+        string $input,
+        int $position,
+        string $expectedInput
+    ): void {
         $this->concreteLexer->setInput($input);
 
         $this->assertSame($expectedInput, $this->concreteLexer->getInputUntilPosition($position));
     }
 
     /**
-     * @param string $input
-     * @param array  $expectedTokens
-     *
+     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
      * @dataProvider dataProvider
      */
-    public function testIsNextToken($input, $expectedTokens)
+    public function testIsNextToken(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
 
@@ -243,12 +239,10 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @param string $input
-     * @param array  $expectedTokens
-     *
+     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
      * @dataProvider dataProvider
      */
-    public function testIsNextTokenAny($input, $expectedTokens)
+    public function testIsNextTokenAny(string $input, array $expectedTokens): void
     {
         $allTokenTypes = array_map(static function ($token) {
             return $token['type'];
@@ -264,13 +258,13 @@ class AbstractLexerTest extends TestCase
         }
     }
 
-    public function testGetLiteral()
+    public function testGetLiteral(): void
     {
         $this->assertSame('Doctrine\Tests\Common\Lexer\ConcreteLexer::INT', $this->concreteLexer->getLiteral('int'));
         $this->assertSame('fake_token', $this->concreteLexer->getLiteral('fake_token'));
     }
 
-    public function testIsA()
+    public function testIsA(): void
     {
         $this->assertTrue($this->concreteLexer->isA(11, 'int'));
         $this->assertTrue($this->concreteLexer->isA(1.1, 'int'));
@@ -280,7 +274,7 @@ class AbstractLexerTest extends TestCase
         $this->assertTrue($this->concreteLexer->isA('fake_text', 'string'));
     }
 
-    public function testAddCatchablePatternsToMutableLexer()
+    public function testAddCatchablePatternsToMutableLexer(): void
     {
         $mutableLexer = new MutableLexer();
         $mutableLexer->addCatchablePattern('[a-z]');
@@ -297,7 +291,7 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals('one', $token['value']);
     }
 
-    public function testMarkerAnnotationLocaleTr() : void
+    public function testMarkerAnnotationLocaleTr(): void
     {
         setlocale(LC_ALL, 'tr_TR.utf8', 'tr_TR');
         $mutableLexer = new MutableLexer();
