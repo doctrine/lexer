@@ -220,7 +220,7 @@ Lexer implementation:
 
 .. note::
 
-    You can see the full implementation `here <https://github.com/doctrine/doctrine2/blob/master/lib/Doctrine/ORM/Query/Parser.php>`_.
+    You can see the full implementation `here <https://github.com/doctrine/doctrine2/blob/1.3.x/lib/Doctrine/ORM/Query/Parser.php>`_.
 
 .. code-block:: php
 
