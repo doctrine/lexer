@@ -311,6 +311,29 @@ abstract class AbstractLexer
     {
         return 'iu';
     }
+    
+    /**
+     * Checks if given value was catched using getCatchablePatterns key
+     *
+     * @example getCatchablePatterns: ['[a-z]']
+     *          => isCaughtByKey('a', 0): true
+     *
+     * @example getCatchablePatterns: ['some_key' => '[a-z]']
+     *          => isCaughtByKey('c', 'some_key'): true
+     * @return bool
+     */
+    public function isCaughtByKey($value, $key)
+    {
+        if (!isset($this->getCatchablePatterns()[$key]) || !$value || !$this->input) {
+            return false;
+        }
+
+        $flags   = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+        $regex = sprintf('/(%s)/%s', $this->getCatchablePatterns()[$key], $this->getModifiers());
+        $matches = preg_split($regex, $this->input, -1, $flags);
+
+        return $matches && count($matches) > 0;
+    }
 
     /**
      * Lexical catchable patterns.
