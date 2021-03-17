@@ -40,15 +40,10 @@ jobs:
           coverage: "pcov"
           ini-values: "zend.assertions=1"
 
-      - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2"
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v1"
         with:
-          path: "~/.composer/cache"
-          key: "php-${{ matrix.php-version }}-composer-locked-${{ hashFiles('composer.lock') }}"
-          restore-keys: "php-${{ matrix.php-version }}-composer-locked-"
-
-      - name: "Install dependencies with composer"
-        run: "composer update --no-interaction --prefer-dist"
+          dependency-versions: "highest"
 
       - name: "Run PHPUnit"
         run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
