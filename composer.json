@@ -22,7 +22,8 @@
     "require-dev": {
         "doctrine/coding-standard": "^8.0",
         "phpstan/phpstan": "^0.12",
-        "phpunit/phpunit": "^8.2 || ^9.4"
+        "phpunit/phpunit": "^8.2 || ^9.4",
+        "vimeo/psalm": "^4.11"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer" }
