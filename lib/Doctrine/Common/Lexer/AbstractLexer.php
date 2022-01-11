@@ -75,7 +75,7 @@ abstract class AbstractLexer
     /**
      * Composed regex for input parsing.
      *
-     * @var string
+     * @var string|null
      */
     private $regex;
 
@@ -215,7 +215,6 @@ abstract class AbstractLexer
      * Moves the lookahead token forward.
      *
      * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
-     *
      * @psalm-return array{value: string, type: string|int|null, position: int}|null
      */
     public function peek()
@@ -231,7 +230,6 @@ abstract class AbstractLexer
      * Peeks at the next token, returns it and immediately resets the peek.
      *
      * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
-     *
      * @psalm-return array{value: string, type: string|int|null, position: int}|null
      */
     public function glimpse()

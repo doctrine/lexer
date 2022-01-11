@@ -121,6 +121,7 @@ class AbstractLexerTest extends TestCase
 
     /**
      * @psalm-param list<array{value: string|int, type: string, position: int}>  $expectedTokens
+     *
      * @dataProvider dataProvider
      */
     public function testMoveNext(string $input, array $expectedTokens): void
@@ -172,6 +173,7 @@ class AbstractLexerTest extends TestCase
 
     /**
      * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     *
      * @dataProvider dataProvider
      */
     public function testPeek(string $input, array $expectedTokens): void
@@ -186,6 +188,7 @@ class AbstractLexerTest extends TestCase
 
     /**
      * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     *
      * @dataProvider dataProvider
      */
     public function testGlimpse(string $input, array $expectedTokens): void
@@ -225,6 +228,7 @@ class AbstractLexerTest extends TestCase
 
     /**
      * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     *
      * @dataProvider dataProvider
      */
     public function testIsNextToken(string $input, array $expectedTokens): void
@@ -240,6 +244,7 @@ class AbstractLexerTest extends TestCase
 
     /**
      * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     *
      * @dataProvider dataProvider
      */
     public function testIsNextTokenAny(string $input, array $expectedTokens): void
