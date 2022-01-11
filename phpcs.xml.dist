@@ -6,7 +6,7 @@
     <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors" />
 
-    <config name="php_version" value="70200"/>
+    <config name="php_version" value="70100"/>
 
     <!-- Ignore warnings and show progress of the run -->
     <arg value="np"/>
