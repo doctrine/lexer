@@ -12,4 +12,4 @@ on:
 jobs:
   phpunit:
     name: "PHPUnit"
-    uses: "doctrine/.github/.github/workflows/continuous-integration.yml@1.2.0"
+    uses: "doctrine/.github/.github/workflows/continuous-integration.yml@1.4.1"
