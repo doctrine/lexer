@@ -3,11 +3,7 @@ name: "Continuous Integration"
 
 on:
   pull_request:
-    branches:
-      - "*.x"
   push:
-    branches:
-      - "*.x"
 
 jobs:
   phpunit:

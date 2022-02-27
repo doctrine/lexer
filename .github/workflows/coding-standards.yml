@@ -3,11 +3,7 @@ name: "Coding Standards"
 
 on:
   pull_request:
-    branches:
-      - "*.x"
   push:
-    branches:
-      - "*.x"
 
 jobs:
   coding-standards:

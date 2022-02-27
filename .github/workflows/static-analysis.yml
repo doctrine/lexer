@@ -3,11 +3,7 @@ name: "Static Analysis"
 
 on:
   pull_request:
-    branches:
-      - "*.x"
   push:
-    branches:
-      - "*.x"
 
 jobs:
   static-analysis:
