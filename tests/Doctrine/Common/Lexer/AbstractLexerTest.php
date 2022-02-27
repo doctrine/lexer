@@ -12,6 +12,9 @@ use function setlocale;
 
 use const LC_ALL;
 
+/**
+ * @psalm-type ValidToken = array{value: string|int, type: string|int, position: int}
+ */
 class AbstractLexerTest extends TestCase
 {
     /** @var ConcreteLexer */
@@ -28,7 +31,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-return list<array{string, list<array{value: string|int, type: string, position: int}>}>
+     * @psalm-return list<array{string, list<ValidToken>}>
      */
     public function dataProvider(): array
     {
@@ -120,7 +123,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<array{value: string|int, type: string, position: int}>  $expectedTokens
+     * @psalm-param list<ValidToken>  $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -172,7 +175,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     * @psalm-param list<ValidToken> $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -187,7 +190,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     * @psalm-param list<ValidToken> $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -227,7 +230,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     * @psalm-param list<ValidToken> $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -243,7 +246,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<array{value: string|int, type: string, position: int}> $expectedTokens
+     * @psalm-param list<ValidToken> $expectedTokens
      *
      * @dataProvider dataProvider
      */
