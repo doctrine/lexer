@@ -18,6 +18,8 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
 
 /**
  * Base class for writing simple lexers, i.e. for creating small DSLs.
+ *
+ * @psalm-type Token = array{value: int|string, type:string|int|null, position:int}
  */
 abstract class AbstractLexer
 {
@@ -38,7 +40,7 @@ abstract class AbstractLexer
      *  - 'position' : the position of the token in the input string
      *
      * @var mixed[][]
-     * @psalm-var list<array{value: string, type: string|int|null, position: int}>
+     * @psalm-var list<Token>
      */
     private $tokens = [];
 
@@ -60,7 +62,7 @@ abstract class AbstractLexer
      * The next token in the input.
      *
      * @var mixed[]|null
-     * @psalm-var array{value: string, type: string|int|null, position: int}|null
+     * @psalm-var Token|null
      */
     public $lookahead;
 
@@ -68,7 +70,7 @@ abstract class AbstractLexer
      * The last matched/seen token.
      *
      * @var mixed[]|null
-     * @psalm-var array{value: string, type: string|int|null, position: int}|null
+     * @psalm-var Token|null
      */
     public $token;
 
@@ -148,25 +150,25 @@ abstract class AbstractLexer
     /**
      * Checks whether a given token matches the current lookahead.
      *
-     * @param int|string $token
+     * @param int|string $type
      *
      * @return bool
      */
-    public function isNextToken($token)
+    public function isNextToken($type)
     {
-        return $this->lookahead !== null && $this->lookahead['type'] === $token;
+        return $this->lookahead !== null && $this->lookahead['type'] === $type;
     }
 
     /**
      * Checks whether any of the given tokens matches the current lookahead.
      *
-     * @param string[] $tokens
+     * @param list<int|string> $types
      *
      * @return bool
      */
-    public function isNextTokenAny(array $tokens)
+    public function isNextTokenAny(array $types)
     {
-        return $this->lookahead !== null && in_array($this->lookahead['type'], $tokens, true);
+        return $this->lookahead !== null && in_array($this->lookahead['type'], $types, true);
     }
 
     /**
@@ -215,7 +217,7 @@ abstract class AbstractLexer
      * Moves the lookahead token forward.
      *
      * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
-     * @psalm-return array{value: string, type: string|int|null, position: int}|null
+     * @psalm-return Token|null
      */
     public function peek()
     {
@@ -230,7 +232,7 @@ abstract class AbstractLexer
      * Peeks at the next token, returns it and immediately resets the peek.
      *
      * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
-     * @psalm-return array{value: string, type: string|int|null, position: int}|null
+     * @psalm-return Token|null
      */
     public function glimpse()
     {
