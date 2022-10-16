@@ -289,9 +289,9 @@ abstract class AbstractLexer
      */
     public function getLiteral($token)
     {
-        $className = static::class;
-        $reflClass = new ReflectionClass($className);
-        $constants = $reflClass->getConstants();
+        static $constants = null;
+        $className        = static::class;
+        $constants        = $constants ?? (new ReflectionClass($className))->getConstants();
 
         foreach ($constants as $name => $value) {
             if ($value === $token) {
