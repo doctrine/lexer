@@ -27,4 +27,9 @@
         <!-- Disabled to avoid class renaming - to be handled in a separate PR -->
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming" />
     </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment">
+        <!-- Remove when dropping PHPUnit 7 -->
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
 </ruleset>
