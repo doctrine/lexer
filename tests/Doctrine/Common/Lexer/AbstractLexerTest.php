@@ -317,4 +317,61 @@ class AbstractLexerTest extends TestCase
         self::assertEquals('@', $mutableLexer->token['value']);
         self::assertEquals('ODM\Id', $mutableLexer->lookahead['value']);
     }
+
+    private function cryptoAddressesProvider()
+    {
+        return [
+            [
+                'address' => '16pe2twTgrjKC8mioPjX3f2UbCMGvWbVz4',
+                'type' => 'bitcoin',
+            ],
+            [
+                'address' => '12KYrjTdVGjFMtaxERSk3gphreJ5US8aUP',
+                'type' => 'bitcoin',
+            ],
+            [
+                'address' => 'bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4',
+                'type' => 'bitcoin',
+            ],
+            [
+                'address' => '17VZNX1SN5NtKa8UQFxwQbFeFc3iqRYhem',
+                'type' => 'bitcoin',
+            ],
+            [
+                // note: this is a valid bitcoin & litecoin address
+                'address' => '36nGbqV7XCNf2xepCLAtRBaqzTcSjF4sv9',
+                'type' => 'bitcoin',
+            ],
+            [
+                // note: this is a valid bitcoin & litecoin address
+                'address' => '3anGbqV7XCNf2xepCLAtRBaqzTcSjF4',
+                'type' => 'bitcoin',
+            ],
+            [
+                'address' => 'lanGbqV7XCNf2xepCLAtRBaqzTcSjF4',
+                'type' => 'litecoin',
+            ],
+            [
+                'address' => '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+                'type' => 'ethereum',
+            ],
+            [
+                'address' => '12QeMLzSrB8XH8FvEzPMVoRxVAzTr5XM2yAAAAAAA',
+                'type' => null,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider cryptoAddressesProvider
+     * @param string $address
+     * @param string|null $type
+     * @return void
+     */
+    public function testIsCaughtByPattern(string $address, $type): void
+    {
+        $cryptocurrencyAddressLexer = new CryptocurrencyAddressLexer();
+
+        $this->assertTrue($cryptocurrencyAddressLexer->isA($address, $type));
+    }
 }

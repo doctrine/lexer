@@ -303,6 +303,44 @@ abstract class AbstractLexer
     }
 
     /**
+     * Checks if a given value was caught using a pattern in getCatchablePatterns
+     *
+     * @param $value
+     * @param $patternKey
+     * @return bool
+     */
+    public function isCaughtByPattern($value, $patternKey): bool
+    {
+        if (!isset($this->getCatchablePatterns()[$patternKey]) || !is_string($value)) {
+            return false;
+        }
+
+        $regex = sprintf('/(%s)/%s', $this->getCatchablePatterns()[$patternKey], $this->getModifiers());
+        preg_match($regex, $value,  $matches);
+
+        return $matches && count($matches) >= 1;
+    }
+
+    /**
+     * Checks if given a value was caught using by any of getCatchablePatterns
+     *
+     * @param $value
+     * @return array
+     */
+    public function caughtByPatterns($value): array
+    {
+        $catchables = [];
+
+        foreach ($this->getCatchablePatterns() as $key => $pattern) {
+            if ($this->isCaughtByPattern($value, $key)) {
+                $catchables[] = $key;
+            }
+        }
+
+        return $catchables;
+    }
+
+    /**
      * Regex modifiers
      *
      * @return string
