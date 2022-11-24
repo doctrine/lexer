@@ -6,7 +6,6 @@ namespace Doctrine\Common\Lexer;
 
 use ReflectionClass;
 
-use function count;
 use function implode;
 use function in_array;
 use function is_string;
@@ -315,9 +314,8 @@ abstract class AbstractLexer
         }
 
         $regex = sprintf('/(%s)/%s', $this->getCatchablePatterns()[$patternKey], $this->getModifiers());
-        preg_match($regex, $value, $matches);
 
-        return $matches && count($matches) > 0;
+        return (bool) preg_match($regex, $value);
     }
 
     /**
