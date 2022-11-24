@@ -123,7 +123,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<ValidToken>  $expectedTokens
+     * @psalm-param list<ValidToken> $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -318,7 +318,11 @@ class AbstractLexerTest extends TestCase
         self::assertEquals('ODM\Id', $mutableLexer->lookahead['value']);
     }
 
-    private function cryptoAddressesProvider()
+    /**
+     * @return array
+     * @psalm-return list<array{address: string, type: int|string|null}>
+     */
+    public function cryptoAddressesProvider(): array
     {
         return [
             [
@@ -338,12 +342,12 @@ class AbstractLexerTest extends TestCase
                 'type' => 'bitcoin',
             ],
             [
-                // note: this is a valid bitcoin & litecoin address
+                // @note: this is a valid bitcoin & litecoin address
                 'address' => '36nGbqV7XCNf2xepCLAtRBaqzTcSjF4sv9',
                 'type' => 'bitcoin',
             ],
             [
-                // note: this is a valid bitcoin & litecoin address
+                // @note: this is a valid bitcoin & litecoin address
                 'address' => '3anGbqV7XCNf2xepCLAtRBaqzTcSjF4',
                 'type' => 'bitcoin',
             ],
@@ -363,10 +367,9 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
+     * @param int|string|null $type
+     *
      * @dataProvider cryptoAddressesProvider
-     * @param string $address
-     * @param string|null $type
-     * @return void
      */
     public function testIsCaughtByPattern(string $address, $type): void
     {

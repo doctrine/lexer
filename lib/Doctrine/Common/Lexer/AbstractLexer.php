@@ -6,8 +6,11 @@ namespace Doctrine\Common\Lexer;
 
 use ReflectionClass;
 
+use function count;
 use function implode;
 use function in_array;
+use function is_string;
+use function preg_match;
 use function preg_split;
 use function sprintf;
 use function substr;
@@ -304,19 +307,15 @@ abstract class AbstractLexer
 
     /**
      * Checks if a given value was caught using a pattern in getCatchablePatterns
-     *
-     * @param $value
-     * @param $patternKey
-     * @return bool
      */
-    public function isCaughtByPattern($value, $patternKey): bool
+    public function isCaughtByPattern(?string $value, string $patternKey): bool
     {
-        if (!isset($this->getCatchablePatterns()[$patternKey]) || !is_string($value)) {
+        if (! isset($this->getCatchablePatterns()[$patternKey]) || ! is_string($value)) {
             return false;
         }
 
         $regex = sprintf('/(%s)/%s', $this->getCatchablePatterns()[$patternKey], $this->getModifiers());
-        preg_match($regex, $value,  $matches);
+        preg_match($regex, $value, $matches);
 
         return $matches && count($matches) >= 1;
     }
@@ -324,17 +323,18 @@ abstract class AbstractLexer
     /**
      * Checks if given a value was caught using by any of getCatchablePatterns
      *
-     * @param $value
-     * @return array
+     * @return string[]
      */
-    public function caughtByPatterns($value): array
+    public function caughtByPatterns(string $value): array
     {
         $catchables = [];
 
         foreach ($this->getCatchablePatterns() as $key => $pattern) {
-            if ($this->isCaughtByPattern($value, $key)) {
-                $catchables[] = $key;
+            if (! $this->isCaughtByPattern($value, $key)) {
+                continue;
             }
+
+            $catchables[] = $key;
         }
 
         return $catchables;

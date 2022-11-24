@@ -6,6 +6,9 @@ namespace Doctrine\Tests\Common\Lexer;
 
 use Doctrine\Common\Lexer\AbstractLexer;
 
+use function array_values;
+use function count;
+
 class CryptocurrencyAddressLexer extends AbstractLexer
 {
     /** @var string[] */
@@ -33,6 +36,7 @@ class CryptocurrencyAddressLexer extends AbstractLexer
 
     /**
      * {@inheritDoc}
+     *
      * @return string|null
      */
     protected function getType(&$value)
@@ -44,12 +48,28 @@ class CryptocurrencyAddressLexer extends AbstractLexer
         }
 
         return array_values($items)[0];
+    }
 
-        // @todo: discuss this possibility.
-        //if (count($items) === 1) {
-        //  return array_values($items)[0];
-        // }
-        //
-        // return $items;
+    /**
+     * @param string $value
+     *
+     * @return string[]|string|null
+     *
+     * @note This implementation needs to be discussed as the caughtByPatterns might return a string[],
+     *        for now getType doesn't support returning array.
+     */
+    protected function getTypes(&$value)
+    {
+        $items = $this->caughtByPatterns($value);
+
+        if (count($items) === 0) {
+            return null;
+        }
+
+        if (count($items) === 1) {
+            return (string) array_values($items)[0];
+        }
+
+        return $items;
     }
 }
