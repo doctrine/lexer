@@ -319,7 +319,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-return list<array{address: string, type: int|string|null}>
+     * @psalm-return list<array{address: string, type: int|string}>
      */
     public function cryptoAddressesProvider(): array
     {
@@ -360,11 +360,11 @@ class AbstractLexerTest extends TestCase
             ],
             [
                 'address' => '12QeMLzSrB8XH8FvEzPMVoRxVAzTr5XM2yAAAAAAA',
-                'type' => null,
+                'type' => '',
             ],
             [
                 'address' => '',
-                'type' => null,
+                'type' => '',
             ],
         ];
     }
