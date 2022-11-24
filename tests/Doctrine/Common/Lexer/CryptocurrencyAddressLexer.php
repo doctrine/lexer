@@ -43,11 +43,7 @@ class CryptocurrencyAddressLexer extends AbstractLexer
     {
         $items = $this->caughtByPatterns($value);
 
-        if (count($items) === 0) {
-            return null;
-        }
-
-        return array_values($items)[0];
+        return array_values($items)[0] ?? null;
     }
 
     /**
