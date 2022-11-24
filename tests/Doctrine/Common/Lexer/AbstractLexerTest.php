@@ -370,7 +370,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @param int|string|null $type
+     * @param int|string $type
      *
      * @dataProvider cryptoAddressesProvider
      */

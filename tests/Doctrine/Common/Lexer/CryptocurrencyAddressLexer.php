@@ -37,19 +37,19 @@ class CryptocurrencyAddressLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      *
-     * @return string|null
+     * @return string
      */
     protected function getType(&$value)
     {
         $items = $this->caughtByPatterns($value);
 
-        return array_values($items)[0] ?? null;
+        return array_values($items)[0] ?? '';
     }
 
     /**
      * @param string $value
      *
-     * @return string[]|string|null
+     * @return string[]|string
      *
      * @note This implementation needs to be discussed as the caughtByPatterns might return a string[],
      *        for now getType doesn't support returning array.
@@ -59,7 +59,7 @@ class CryptocurrencyAddressLexer extends AbstractLexer
         $items = $this->caughtByPatterns($value);
 
         if (count($items) === 0) {
-            return null;
+            return '';
         }
 
         if (count($items) === 1) {
