@@ -312,8 +312,10 @@ class AbstractLexerTest extends TestCase
         self::assertNull($mutableLexer->lookahead);
         self::assertTrue($mutableLexer->moveNext());
         self::assertNull($mutableLexer->token);
+        self::assertNotNull($mutableLexer->lookahead);
         self::assertEquals('@', $mutableLexer->lookahead['value']);
         self::assertTrue($mutableLexer->moveNext());
+        self::assertNotNull($mutableLexer->token);
         self::assertEquals('@', $mutableLexer->token['value']);
         self::assertEquals('ODM\Id', $mutableLexer->lookahead['value']);
     }
