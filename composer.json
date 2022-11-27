@@ -1,7 +1,8 @@
 {
     "name": "doctrine/lexer",
-    "type": "library",
     "description": "PHP Doctrine Lexer parser library that can be used in Top-Down, Recursive Descent Parsers.",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "php",
         "parser",
@@ -9,13 +10,21 @@
         "annotations",
         "docblock"
     ],
-    "homepage": "https://www.doctrine-project.org/projects/lexer.html",
-    "license": "MIT",
     "authors": [
-        {"name": "Guilherme Blanco", "email": "guilhermeblanco@gmail.com"},
-        {"name": "Roman Borschel", "email": "roman@code-factory.org"},
-        {"name": "Johannes Schmitt", "email": "schmittjoh@gmail.com"}
+        {
+            "name": "Guilherme Blanco",
+            "email": "guilhermeblanco@gmail.com"
+        },
+        {
+            "name": "Roman Borschel",
+            "email": "roman@code-factory.org"
+        },
+        {
+            "name": "Johannes Schmitt",
+            "email": "schmittjoh@gmail.com"
+        }
     ],
+    "homepage": "https://www.doctrine-project.org/projects/lexer.html",
     "require": {
         "php": "^7.1 || ^8.0"
     },
@@ -26,10 +35,14 @@
         "vimeo/psalm": "^4.11"
     },
     "autoload": {
-        "psr-4": { "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer" }
+        "psr-4": {
+            "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "Doctrine\\Tests\\": "tests/Doctrine" }
+        "psr-4": {
+            "Doctrine\\Tests\\": "tests/Doctrine"
+        }
     },
     "config": {
         "allow-plugins": {
