@@ -7,6 +7,8 @@ like the following:
 
 .. code-block:: php
 
+    <?php
+
     use Doctrine\Common\Lexer\AbstractLexer;
 
     class Lexer extends AbstractLexer
@@ -101,7 +103,7 @@ like the following:
          *
          * @param string $input A query string.
          */
-        public function __construct($input)
+        public function __construct(string $input)
         {
             $this->setInput($input);
         }
@@ -109,7 +111,7 @@ like the following:
         /**
          * {@inheritdoc}
          */
-        protected function getCatchablePatterns()
+        protected function getCatchablePatterns(): array
         {
             return [
                 '[a-z_][a-z0-9_]*\:[a-z_][a-z0-9_]*(?:\\\[a-z_][a-z0-9_]*)*', // aliased name
@@ -123,7 +125,7 @@ like the following:
         /**
          * {@inheritdoc}
          */
-        protected function getNonCatchablePatterns()
+        protected function getNonCatchablePatterns(): array
         {
             return ['\s+', '(.)'];
         }
@@ -131,7 +133,7 @@ like the following:
         /**
          * {@inheritdoc}
          */
-        protected function getType(&$value)
+        protected function getType(&$value): int
         {
             $type = self::T_NONE;
 
@@ -224,11 +226,13 @@ Lexer implementation:
 
 .. code-block:: php
 
+    <?php
+
     class Parser
     {
         private $lexer;
 
-        public function __construct($dql)
+        public function __construct(string $dql)
         {
             $this->lexer = new Lexer();
             $this->lexer->setInput($dql);
@@ -236,7 +240,7 @@ Lexer implementation:
 
         // ...
 
-        public function getAST()
+        public function getAST(): AST\SelectStatement|AST\UpdateStatement|AST\DeleteStatement
         {
             // Parse & build AST
             $AST = $this->QueryLanguage();
@@ -246,7 +250,7 @@ Lexer implementation:
             return $AST;
         }
 
-        public function QueryLanguage()
+        public function QueryLanguage(): AST\SelectStatement|AST\UpdateStatement|AST\DeleteStatement
         {
             $this->lexer->moveNext();
 
@@ -262,7 +266,6 @@ Lexer implementation:
                     break;
                 default:
                     $this->syntaxError('SELECT, UPDATE or DELETE');
-                    break;
             }
 
             // Check for end of string
@@ -280,6 +283,8 @@ Now the AST is used to transform the DQL query in to portable SQL for whatever r
 database you are using!
 
 .. code-block:: php
+
+    <?php
 
     $parser = new Parser('SELECT u FROM User u');
     $AST = $parser->getAST(); // returns \Doctrine\ORM\Query\AST\SelectStatement
