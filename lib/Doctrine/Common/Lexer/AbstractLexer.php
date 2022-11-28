@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Doctrine\Common\Lexer;
 
 use ReflectionClass;
+use UnitEnum;
 
+use function get_class;
 use function implode;
 use function preg_split;
 use function sprintf;
@@ -18,7 +20,7 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
 /**
  * Base class for writing simple lexers, i.e. for creating small DSLs.
  *
- * @template T of string|int
+ * @template T of UnitEnum|string|int
  */
 abstract class AbstractLexer
 {
@@ -275,13 +277,18 @@ abstract class AbstractLexer
     /**
      * Gets the literal for a given token.
      *
-     * @param int|string $token
+     * @param T $token
      *
      * @return int|string
      */
     public function getLiteral($token)
     {
+        if ($token instanceof UnitEnum) {
+            return get_class($token) . '::' . $token->name;
+        }
+
         $className = static::class;
+
         $reflClass = new ReflectionClass($className);
         $constants = $reflClass->getConstants();
 
