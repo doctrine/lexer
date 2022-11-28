@@ -10,7 +10,6 @@ use function in_array;
 use function is_numeric;
 use function is_string;
 
-/** @extends AbstractLexer<string> */
 class ConcreteLexer extends AbstractLexer
 {
     public const INT = 'int';

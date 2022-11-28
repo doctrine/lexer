@@ -26,8 +26,7 @@
     ],
     "homepage": "https://www.doctrine-project.org/projects/lexer.html",
     "require": {
-        "php": "^7.1 || ^8.0",
-        "doctrine/deprecations": "^1.0"
+        "php": "^7.1 || ^8.0"
     },
     "require-dev": {
         "doctrine/coding-standard": "^9 || ^10",
