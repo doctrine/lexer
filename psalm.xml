@@ -12,4 +12,11 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <UndefinedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Doctrine\Common\Lexer\Token::offsetGet"/>
+            </errorLevel>
+        </UndefinedMethod>
+    </issueHandlers>
 </psalm>

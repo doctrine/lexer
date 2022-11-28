@@ -3,3 +3,10 @@ parameters:
   paths:
     - %rootDir%/../../../lib
     - %rootDir%/../../../tests
+  ignoreErrors:
+    -
+       message: "/^Cannot access offset 'type'.*/"
+       path: lib/Doctrine/Common/Lexer/AbstractLexer.php
+    -
+       message: "/^Cannot call method isA.*/"
+       path: lib/Doctrine/Common/Lexer/AbstractLexer.php
