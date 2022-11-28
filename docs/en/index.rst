@@ -13,24 +13,19 @@ and implement the following three abstract methods.
     /**
      * Lexical catchable patterns.
      *
-     * @return array
+     * @return string[]
      */
     abstract protected function getCatchablePatterns();
 
     /**
      * Lexical non-catchable patterns.
      *
-     * @return array
+     * @return string[]
      */
     abstract protected function getNonCatchablePatterns();
 
-    /**
-     * Retrieve token type. Also processes the token value if necessary.
-     *
-     * @param string $value
-     * @return integer
-     */
-    abstract protected function getType(&$value);
+    /** Retrieve token type. Also processes the token value if necessary. */
+    abstract protected function getType(string &$value): int;
 
 These methods define the `lexical <http://en.wikipedia.org/wiki/Lexical_analysis>`_
 catchable and non-catchable patterns and a method for returning the
