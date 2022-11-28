@@ -250,7 +250,7 @@ Lexer implementation:
         {
             $this->lexer->moveNext();
 
-            switch ($this->lexer->lookahead->type) {
+            switch ($this->lexer->lookahead['type']) {
                 case Lexer::T_SELECT:
                     $statement = $this->SelectStatement();
                     break;
