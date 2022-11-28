@@ -183,7 +183,12 @@ class AbstractLexerTest extends TestCase
     {
         $this->concreteLexer->setInput($input);
         foreach ($expectedTokens as $expectedToken) {
-            $this->assertEquals($expectedToken, $this->concreteLexer->peek());
+            $actualToken = $this->concreteLexer->peek();
+            $this->assertEquals($expectedToken, $actualToken);
+            $this->assertSame($expectedToken['value'], $actualToken['value']);
+            $this->assertSame($expectedToken['type'], $actualToken['type']);
+            $this->assertSame($expectedToken['position'], $actualToken['position']);
+            $this->assertCount(3, $actualToken);
         }
 
         $this->assertNull($this->concreteLexer->peek());
@@ -199,7 +204,12 @@ class AbstractLexerTest extends TestCase
         $this->concreteLexer->setInput($input);
 
         foreach ($expectedTokens as $expectedToken) {
+            $actualToken = $this->concreteLexer->glimpse();
             $this->assertEquals($expectedToken, $this->concreteLexer->glimpse());
+            $this->assertSame($expectedToken['value'], $actualToken['value']);
+            $this->assertSame($expectedToken['type'], $actualToken['type']);
+            $this->assertSame($expectedToken['position'], $actualToken['position']);
+            $this->assertCount(3, $actualToken);
             $this->concreteLexer->moveNext();
         }
 
