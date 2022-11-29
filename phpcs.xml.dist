@@ -6,7 +6,7 @@
     <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors" />
 
-    <config name="php_version" value="70100"/>
+    <config name="php_version" value="80100"/>
 
     <!-- Ignore warnings and show progress of the run -->
     <arg value="np"/>
@@ -15,21 +15,10 @@
     <file>tests</file>
 
     <rule ref="Doctrine">
-        <!-- Traversable type hints often end up as mixed[], so we skip them for now -->
-        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification" />
-        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification" />
-        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />
-
         <!-- Will cause BC breaks to method signatures - disabled for now -->
-        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint" />
         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint" />
 
         <!-- Disabled to avoid class renaming - to be handled in a separate PR -->
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming" />
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment">
-        <!-- Remove when dropping PHPUnit 7 -->
-        <exclude-pattern>tests/*</exclude-pattern>
     </rule>
 </ruleset>

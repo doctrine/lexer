@@ -37,6 +37,7 @@
         </MixedAssignment>
         <MixedReturnStatement>
             <errorLevel type="suppress">
+                <file name="src/AbstractLexer.php" />
                 <file name="src/Token.php" />
             </errorLevel>
         </MixedReturnStatement>
@@ -44,6 +45,7 @@
             <errorLevel type="suppress">
                 <!-- https://github.com/vimeo/psalm/issues/8891 -->
                 <file name="src/AbstractLexer.php" />
+                <file name="tests/EnumLexer.php" />
             </errorLevel>
         </ReferenceConstraintViolation>
         <RedundantConditionGivenDocblockType>

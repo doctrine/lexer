@@ -20,7 +20,7 @@ final class Token
      * @readonly
      * @var V
      */
-    public $value;
+    public string|int $value;
 
     /**
      * The type of the token (identifier, numeric, string, input parameter, none)
@@ -34,15 +34,14 @@ final class Token
      * The position of the token in the input string
      *
      * @readonly
-     * @var int
      */
-    public $position;
+    public int $position;
 
     /**
      * @param V      $value
      * @param T|null $type
      */
-    public function __construct($value, $type, int $position)
+    public function __construct(string|int $value, $type, int $position)
     {
         $this->value    = $value;
         $this->type     = $type;
