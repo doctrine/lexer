@@ -17,7 +17,7 @@ class ConcreteLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function getCatchablePatterns()
+    protected function getCatchablePatterns(): array
     {
         return [
             '=|<|>',
@@ -29,7 +29,7 @@ class ConcreteLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function getNonCatchablePatterns()
+    protected function getNonCatchablePatterns(): array
     {
         return [
             '\s+',
@@ -40,7 +40,7 @@ class ConcreteLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function getType(&$value)
+    protected function getType(&$value): string
     {
         if (is_numeric($value)) {
             $value = (int) $value;
