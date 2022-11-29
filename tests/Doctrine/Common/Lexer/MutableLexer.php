@@ -19,7 +19,7 @@ class MutableLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function getCatchablePatterns()
+    protected function getCatchablePatterns(): array
     {
         return $this->catchablePatterns;
     }
@@ -27,7 +27,7 @@ class MutableLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function getNonCatchablePatterns()
+    protected function getNonCatchablePatterns(): array
     {
         return ['[\s,]+'];
     }
@@ -35,7 +35,7 @@ class MutableLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function getType(&$value)
+    protected function getType(&$value): int
     {
         return 1;
     }
