@@ -289,6 +289,7 @@ class AbstractLexerTest extends TestCase
         $mutableLexer->setInput('one');
         $token = $mutableLexer->glimpse();
 
+        $this->assertNotNull($token);
         $this->assertEquals('o', $token['value']);
 
         $mutableLexer = new MutableLexer();
@@ -296,6 +297,7 @@ class AbstractLexerTest extends TestCase
         $mutableLexer->setInput('one');
         $token = $mutableLexer->glimpse();
 
+        $this->assertNotNull($token);
         $this->assertEquals('one', $token['value']);
     }
 
