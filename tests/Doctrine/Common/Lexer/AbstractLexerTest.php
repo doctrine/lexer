@@ -274,8 +274,8 @@ class AbstractLexerTest extends TestCase
 
     public function testIsA(): void
     {
-        $this->assertTrue($this->concreteLexer->isA(11, 'int'));
-        $this->assertTrue($this->concreteLexer->isA(1.1, 'int'));
+        $this->assertTrue($this->concreteLexer->isA('11', 'int'));
+        $this->assertTrue($this->concreteLexer->isA('1.1', 'int'));
         $this->assertTrue($this->concreteLexer->isA('=', 'operator'));
         $this->assertTrue($this->concreteLexer->isA('>', 'operator'));
         $this->assertTrue($this->concreteLexer->isA('<', 'operator'));
