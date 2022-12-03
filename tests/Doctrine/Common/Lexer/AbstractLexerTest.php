@@ -274,8 +274,8 @@ class AbstractLexerTest extends TestCase
 
     public function testIsA(): void
     {
-        $this->assertTrue($this->concreteLexer->isA(11, 'int'));
-        $this->assertTrue($this->concreteLexer->isA(1.1, 'int'));
+        $this->assertTrue($this->concreteLexer->isA('11', 'int'));
+        $this->assertTrue($this->concreteLexer->isA('1.1', 'int'));
         $this->assertTrue($this->concreteLexer->isA('=', 'operator'));
         $this->assertTrue($this->concreteLexer->isA('>', 'operator'));
         $this->assertTrue($this->concreteLexer->isA('<', 'operator'));
@@ -289,6 +289,7 @@ class AbstractLexerTest extends TestCase
         $mutableLexer->setInput('one');
         $token = $mutableLexer->glimpse();
 
+        $this->assertNotNull($token);
         $this->assertEquals('o', $token['value']);
 
         $mutableLexer = new MutableLexer();
@@ -296,6 +297,7 @@ class AbstractLexerTest extends TestCase
         $mutableLexer->setInput('one');
         $token = $mutableLexer->glimpse();
 
+        $this->assertNotNull($token);
         $this->assertEquals('one', $token['value']);
     }
 
