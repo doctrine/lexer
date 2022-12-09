@@ -70,8 +70,8 @@ Use ``CharacterTypeLexer`` to extract an array of upper case characters:
 
                 $this->lexer->moveNext();
 
-                if ($this->lexer->token['type'] === CharacterTypeLexer::T_UPPER) {
-                    $upperCaseChars[] = $this->lexer->token['value'];
+                if ($this->lexer->token->isA(CharacterTypeLexer::T_UPPER)) {
+                    $upperCaseChars[] = $this->lexer->token->value;
                 }
             }
 
