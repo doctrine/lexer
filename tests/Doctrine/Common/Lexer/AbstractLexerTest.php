@@ -234,6 +234,18 @@ class AbstractLexerTest extends TestCase
         $this->assertSame('fake_token', $this->concreteLexer->getLiteral('fake_token'));
     }
 
+    /**
+     * @requires PHP 8.1
+     */
+    public function testGetLiteralWithEnumLexer(): void
+    {
+        $enumLexer = new EnumLexer();
+        $this->assertSame(
+            'Doctrine\Tests\Common\Lexer\TokenType::OPERATOR',
+            $enumLexer->getLiteral(TokenType::OPERATOR)
+        );
+    }
+
     public function testIsA(): void
     {
         $this->assertTrue($this->concreteLexer->isA(11, 'int'));

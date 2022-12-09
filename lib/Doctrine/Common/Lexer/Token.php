@@ -7,11 +7,12 @@ namespace Doctrine\Common\Lexer;
 use ArrayAccess;
 use Doctrine\Deprecations\Deprecation;
 use ReturnTypeWillChange;
+use UnitEnum;
 
 use function in_array;
 
 /**
- * @template T of string|int
+ * @template T of UnitEnum|string|int
  * @implements ArrayAccess<string,mixed>
  */
 final class Token implements ArrayAccess
