@@ -8,7 +8,6 @@ use Doctrine\Common\Lexer\AbstractLexer;
 
 use function in_array;
 use function is_numeric;
-use function is_string;
 
 /** @extends AbstractLexer<string> */
 class ConcreteLexer extends AbstractLexer
@@ -53,8 +52,6 @@ class ConcreteLexer extends AbstractLexer
             return 'operator';
         }
 
-        if (is_string($value)) {
-            return 'string';
-        }
+        return 'string';
     }
 }

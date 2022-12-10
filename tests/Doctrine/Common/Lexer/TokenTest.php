@@ -14,6 +14,7 @@ final class TokenTest extends TestCase
 
     public function testIsA(): void
     {
+        /** @var Token<'string'|'int'> $token */
         $token = new Token('foo', 'string', 1);
 
         self::assertTrue($token->isA('string'));
