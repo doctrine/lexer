@@ -11,7 +11,7 @@
     <!-- Ignore warnings and show progress of the run -->
     <arg value="np"/>
 
-    <file>lib</file>
+    <file>src</file>
     <file>tests</file>
 
     <rule ref="Doctrine">
