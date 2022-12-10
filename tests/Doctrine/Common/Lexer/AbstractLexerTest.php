@@ -8,6 +8,7 @@ use Doctrine\Common\Lexer\Token;
 use PHPUnit\Framework\TestCase;
 
 use function array_map;
+use function assert;
 use function count;
 use function setlocale;
 
@@ -138,6 +139,7 @@ class AbstractLexerTest extends TestCase
         $this->concreteLexer->setInput($input);
         foreach ($expectedTokens as $expectedToken) {
             $actualToken = $this->concreteLexer->peek();
+            assert($actualToken !== null);
             $this->assertEquals($expectedToken, $actualToken);
             $this->assertSame($expectedToken['value'], $actualToken['value']);
             $this->assertSame($expectedToken['type'], $actualToken['type']);
@@ -158,6 +160,8 @@ class AbstractLexerTest extends TestCase
 
         foreach ($expectedTokens as $expectedToken) {
             $actualToken = $this->concreteLexer->glimpse();
+            assert($actualToken !== null);
+            $this->assertEquals($expectedToken, $actualToken);
             $this->assertEquals($expectedToken, $this->concreteLexer->glimpse());
             $this->assertSame($expectedToken['value'], $actualToken['value']);
             $this->assertSame($expectedToken['type'], $actualToken['type']);
@@ -202,6 +206,7 @@ class AbstractLexerTest extends TestCase
 
         $this->concreteLexer->moveNext();
         for ($i = 0; $i < count($expectedTokens); $i++) {
+            assert($expectedTokens[$i]->type !== null);
             $this->assertTrue($this->concreteLexer->isNextToken($expectedTokens[$i]->type));
             $this->concreteLexer->moveNext();
         }
@@ -214,7 +219,9 @@ class AbstractLexerTest extends TestCase
      */
     public function testIsNextTokenAny(string $input, array $expectedTokens): void
     {
-        $allTokenTypes = array_map(static function ($token) {
+        $allTokenTypes = array_map(static function ($token): string {
+            assert($token->type !== null);
+
             return $token->type;
         }, $expectedTokens);
 
@@ -222,6 +229,7 @@ class AbstractLexerTest extends TestCase
 
         $this->concreteLexer->moveNext();
         for ($i = 0; $i < count($expectedTokens); $i++) {
+            assert($expectedTokens[$i]->type !== null);
             $this->assertTrue($this->concreteLexer->isNextTokenAny([$expectedTokens[$i]->type]));
             $this->assertTrue($this->concreteLexer->isNextTokenAny($allTokenTypes));
             $this->concreteLexer->moveNext();
@@ -248,8 +256,8 @@ class AbstractLexerTest extends TestCase
 
     public function testIsA(): void
     {
-        $this->assertTrue($this->concreteLexer->isA(11, 'int'));
-        $this->assertTrue($this->concreteLexer->isA(1.1, 'int'));
+        $this->assertTrue($this->concreteLexer->isA('11', 'int'));
+        $this->assertTrue($this->concreteLexer->isA('1.1', 'int'));
         $this->assertTrue($this->concreteLexer->isA('=', 'operator'));
         $this->assertTrue($this->concreteLexer->isA('>', 'operator'));
         $this->assertTrue($this->concreteLexer->isA('<', 'operator'));
@@ -263,6 +271,7 @@ class AbstractLexerTest extends TestCase
         $mutableLexer->setInput('one');
         $token = $mutableLexer->glimpse();
 
+        $this->assertNotNull($token);
         $this->assertEquals('o', $token->value);
 
         $mutableLexer = new MutableLexer();
@@ -270,6 +279,7 @@ class AbstractLexerTest extends TestCase
         $mutableLexer->setInput('one');
         $token = $mutableLexer->glimpse();
 
+        $this->assertNotNull($token);
         $this->assertEquals('one', $token->value);
     }
 

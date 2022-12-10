@@ -1,15 +1,51 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="5"
+    errorLevel="1"
+    phpVersion="8.1"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="lib/Doctrine/Common/Lexer" />
+        <directory name="lib/Doctrine/Common/Lexer"/>
+        <directory name="tests/Doctrine/Common/Lexer"/>
         <ignoreFiles>
-            <directory name="vendor" />
+            <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
+    <issueHandlers>
+        <DeprecatedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Doctrine\Common\Lexer\Token::offsetGet"/>
+                <referencedMethod name="Doctrine\Common\Lexer\Token::offsetSet"/>
+            </errorLevel>
+        </DeprecatedMethod>
+        <DocblockTypeContradiction>
+            <errorLevel type="suppress">
+                <!-- let us assume no one actually unsets the value of a token -->
+                <file name="tests/Doctrine/Common/Lexer/TokenTest.php" />
+            </errorLevel>
+        </DocblockTypeContradiction>
+        <InvalidReturnStatement>
+            <errorLevel type="suppress">
+                <!-- https://github.com/vimeo/psalm/issues/8878 -->
+                <file name="lib/Doctrine/Common/Lexer/AbstractLexer.php" />
+            </errorLevel>
+        </InvalidReturnStatement>
+        <InvalidReturnType>
+            <errorLevel type="suppress">
+                <!-- https://github.com/vimeo/psalm/issues/8878 -->
+                <file name="lib/Doctrine/Common/Lexer/AbstractLexer.php" />
+            </errorLevel>
+        </InvalidReturnType>
+        <MixedAssignment>
+            <errorLevel type="suppress">
+                <file name="lib/Doctrine/Common/Lexer/AbstractLexer.php" />
+            </errorLevel>
+        </MixedAssignment>
+    </issueHandlers>
 </psalm>

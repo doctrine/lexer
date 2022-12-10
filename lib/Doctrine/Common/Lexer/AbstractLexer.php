@@ -183,7 +183,7 @@ abstract class AbstractLexer
     /**
      * Tells the lexer to skip input tokens until it sees a token with the given value.
      *
-     * @param string $type The token type to skip until.
+     * @param T $type The token type to skip until.
      *
      * @return void
      */
@@ -197,7 +197,7 @@ abstract class AbstractLexer
     /**
      * Checks if given value is identical to the given token.
      *
-     * @param mixed      $value
+     * @param string     $value
      * @param int|string $token
      *
      * @return bool

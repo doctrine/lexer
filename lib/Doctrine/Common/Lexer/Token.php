@@ -77,6 +77,10 @@ final class Token implements ArrayAccess
     /**
      * @deprecated Use the value, type or position property instead
      * {@inheritDoc}
+     *
+     * @param array-key $offset
+     *
+     * @return mixed
      */
     #[ReturnTypeWillChange]
     public function offsetGet($offset)

@@ -8,7 +8,6 @@ use Doctrine\Common\Lexer\AbstractLexer;
 
 use function in_array;
 use function is_numeric;
-use function is_string;
 
 /** @extends AbstractLexer<TokenType> */
 class EnumLexer extends AbstractLexer
@@ -51,8 +50,6 @@ class EnumLexer extends AbstractLexer
             return TokenType::OPERATOR;
         }
 
-        if (is_string($value)) {
-            return TokenType::STRING;
-        }
+        return TokenType::STRING;
     }
 }
