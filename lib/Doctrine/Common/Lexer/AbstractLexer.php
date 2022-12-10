@@ -203,7 +203,7 @@ abstract class AbstractLexer
     /**
      * Checks if given value is identical to the given token.
      *
-     * @param mixed      $value
+     * @param string     $value
      * @param int|string $token
      *
      * @return bool
