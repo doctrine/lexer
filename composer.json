@@ -38,12 +38,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer"
+            "Doctrine\\Common\\Lexer\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Doctrine\\Tests\\": "tests/Doctrine"
+            "Doctrine\\Tests\\Common\\Lexer\\": "tests"
         }
     },
     "config": {

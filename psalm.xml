@@ -8,8 +8,8 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="lib/Doctrine/Common/Lexer"/>
-        <directory name="tests/Doctrine/Common/Lexer"/>
+        <directory name="src"/>
+        <directory name="tests"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>
@@ -27,24 +27,24 @@
         <DocblockTypeContradiction>
             <errorLevel type="suppress">
                 <!-- let us assume no one actually unsets the value of a token -->
-                <file name="tests/Doctrine/Common/Lexer/TokenTest.php" />
+                <file name="tests/TokenTest.php" />
             </errorLevel>
         </DocblockTypeContradiction>
         <InvalidReturnStatement>
             <errorLevel type="suppress">
                 <!-- https://github.com/vimeo/psalm/issues/8878 -->
-                <file name="lib/Doctrine/Common/Lexer/AbstractLexer.php" />
+                <file name="src/AbstractLexer.php" />
             </errorLevel>
         </InvalidReturnStatement>
         <InvalidReturnType>
             <errorLevel type="suppress">
                 <!-- https://github.com/vimeo/psalm/issues/8878 -->
-                <file name="lib/Doctrine/Common/Lexer/AbstractLexer.php" />
+                <file name="src/AbstractLexer.php" />
             </errorLevel>
         </InvalidReturnType>
         <MixedAssignment>
             <errorLevel type="suppress">
-                <file name="lib/Doctrine/Common/Lexer/AbstractLexer.php" />
+                <file name="src/AbstractLexer.php" />
             </errorLevel>
         </MixedAssignment>
     </issueHandlers>
