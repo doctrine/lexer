@@ -1,5 +1,5 @@
 parameters:
   level: max
   paths:
-    - %rootDir%/../../../lib
+    - %rootDir%/../../../src
     - %rootDir%/../../../tests
