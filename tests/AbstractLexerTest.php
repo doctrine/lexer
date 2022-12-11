@@ -141,9 +141,9 @@ class AbstractLexerTest extends TestCase
             $actualToken = $this->concreteLexer->peek();
             assert($actualToken !== null);
             $this->assertEquals($expectedToken, $actualToken);
-            $this->assertSame($expectedToken['value'], $actualToken['value']);
-            $this->assertSame($expectedToken['type'], $actualToken['type']);
-            $this->assertSame($expectedToken['position'], $actualToken['position']);
+            $this->assertSame($expectedToken->value, $actualToken->value);
+            $this->assertSame($expectedToken->type, $actualToken->type);
+            $this->assertSame($expectedToken->position, $actualToken->position);
         }
 
         $this->assertNull($this->concreteLexer->peek());
@@ -163,9 +163,9 @@ class AbstractLexerTest extends TestCase
             assert($actualToken !== null);
             $this->assertEquals($expectedToken, $actualToken);
             $this->assertEquals($expectedToken, $this->concreteLexer->glimpse());
-            $this->assertSame($expectedToken['value'], $actualToken['value']);
-            $this->assertSame($expectedToken['type'], $actualToken['type']);
-            $this->assertSame($expectedToken['position'], $actualToken['position']);
+            $this->assertSame($expectedToken->value, $actualToken->value);
+            $this->assertSame($expectedToken->type, $actualToken->type);
+            $this->assertSame($expectedToken->position, $actualToken->position);
             $this->concreteLexer->moveNext();
         }
 

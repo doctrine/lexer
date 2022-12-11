@@ -6,6 +6,10 @@ awareness about deprecated code.
 - Use of our low-overhead runtime deprecation API, details:
   https://github.com/doctrine/deprecations/
 
+# Upgrade to 3.0.0
+
+`Doctrine\Common\Lexer\Token` no longer implements `ArrayAccess`.
+
 # Upgrade to 2.0.0
 
 `AbstractLexer::glimpse()` and `AbstractLexer::peek()` now return
