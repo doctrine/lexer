@@ -47,5 +47,11 @@
                 <file name="src/AbstractLexer.php" />
             </errorLevel>
         </MixedAssignment>
+        <RedundantConditionGivenDocblockType>
+            <errorLevel type="suppress">
+                <!-- that test checks non-obvious things guaranteed by static analysis, just in case -->
+                <file name="tests/AbstractLexerTest.php" />
+            </errorLevel>
+        </RedundantConditionGivenDocblockType>
     </issueHandlers>
 </psalm>
