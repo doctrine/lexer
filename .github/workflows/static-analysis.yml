@@ -10,6 +10,7 @@ on:
       - composer.*
       - src/**
       - phpstan*
+      - psalm*
       - tests/**
   push:
     branches:
@@ -19,6 +20,7 @@ on:
       - composer.*
       - src/**
       - phpstan*
+      - psalm*
       - tests/**
 
 jobs:
