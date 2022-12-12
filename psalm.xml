@@ -47,6 +47,11 @@
                 <file name="src/AbstractLexer.php" />
             </errorLevel>
         </MixedAssignment>
+        <MixedReturnStatement>
+            <errorLevel type="suppress">
+                <file name="src/Token.php" />
+            </errorLevel>
+        </MixedReturnStatement>
         <RedundantConditionGivenDocblockType>
             <errorLevel type="suppress">
                 <!-- that test checks non-obvious things guaranteed by static analysis, just in case -->

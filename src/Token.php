@@ -78,9 +78,24 @@ final class Token implements ArrayAccess
      * @deprecated Use the value, type or position property instead
      * {@inheritDoc}
      *
-     * @param array-key $offset
+     * @param O $offset
      *
      * @return mixed
+     * @psalm-return (
+     *     O is 'value'
+     *     ? string|int
+     *     : (
+     *         O is 'type'
+     *         ? T|null
+     *         : (
+     *             O is 'position'
+     *             ? int
+     *             : mixed
+     *         )
+     *     )
+     * )
+     *
+     * @template O of array-key
      */
     #[ReturnTypeWillChange]
     public function offsetGet($offset)
