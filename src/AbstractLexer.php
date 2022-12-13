@@ -148,7 +148,7 @@ abstract class AbstractLexer
      *
      * @return bool
      *
-     * @psalm-assert-if-true !null $this->lookahead
+     * @psalm-assert-if-true !=null $this->lookahead
      */
     public function isNextToken($type)
     {
@@ -162,7 +162,7 @@ abstract class AbstractLexer
      *
      * @return bool
      *
-     * @psalm-assert-if-true !null $this->lookahead
+     * @psalm-assert-if-true !=null $this->lookahead
      */
     public function isNextTokenAny(array $types)
     {
@@ -175,7 +175,6 @@ abstract class AbstractLexer
      * @return bool
      *
      * @psalm-assert-if-true !null $this->lookahead
-     * @psalm-assert-if-false null $this->lookahead
      */
     public function moveNext()
     {
