@@ -30,7 +30,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-return list<array{string, list<Token<string>>}>
+     * @psalm-return list<array{string, list<Token<string, string|int>>}>
      */
     public function dataProvider(): array
     {
@@ -86,7 +86,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<Token<string>>  $expectedTokens
+     * @psalm-param list<Token<string, string|int>>  $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -130,7 +130,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<Token<string>> $expectedTokens
+     * @psalm-param list<Token<string, string|int>> $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -150,7 +150,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<Token<string>> $expectedTokens
+     * @psalm-param list<Token<string, string|int>> $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -196,7 +196,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<Token<string>> $expectedTokens
+     * @psalm-param list<Token<string, string|int>> $expectedTokens
      *
      * @dataProvider dataProvider
      */
@@ -213,7 +213,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /**
-     * @psalm-param list<Token<string>> $expectedTokens
+     * @psalm-param list<Token<string, string|int>> $expectedTokens
      *
      * @dataProvider dataProvider
      */

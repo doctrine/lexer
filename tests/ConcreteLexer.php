@@ -9,7 +9,7 @@ use Doctrine\Common\Lexer\AbstractLexer;
 use function in_array;
 use function is_numeric;
 
-/** @extends AbstractLexer<string> */
+/** @extends AbstractLexer<string, string|int> */
 class ConcreteLexer extends AbstractLexer
 {
     public const INT = 'int';

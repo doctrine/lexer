@@ -3,3 +3,8 @@ parameters:
   paths:
     - %rootDir%/../../../src
     - %rootDir%/../../../tests
+
+  ignoreErrors:
+    -
+      message: '#^Method Doctrine\\Tests\\Common\\Lexer\\AbstractLexerTest\:\:dataProvider\(\) should return array\<int, array\{string, array\<int, Doctrine\\Common\\Lexer\\Token\<string, int\|string\>\>\}\> but returns array\{array\{''price\=10'', array\{Doctrine\\Common\\Lexer\\Token\<string, string\>, Doctrine\\Common\\Lexer\\Token\<string, string\>, Doctrine\\Common\\Lexer\\Token\<string, int\>\}\}\}\.$#'
+      path: tests/AbstractLexerTest.php
