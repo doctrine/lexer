@@ -6,7 +6,7 @@ namespace Doctrine\Tests\Common\Lexer;
 
 use Doctrine\Common\Lexer\AbstractLexer;
 
-/** @extends AbstractLexer<int> */
+/** @extends AbstractLexer<int, string> */
 class MutableLexer extends AbstractLexer
 {
     /** @var string[] */

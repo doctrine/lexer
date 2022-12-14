@@ -8,14 +8,17 @@ use UnitEnum;
 
 use function in_array;
 
-/** @template T of UnitEnum|string|int */
+/**
+ * @template T of UnitEnum|string|int
+ * @template V of string|int
+ */
 final class Token
 {
     /**
      * The string value of the token in the input string
      *
      * @readonly
-     * @var string|int
+     * @var V
      */
     public $value;
 
@@ -36,8 +39,8 @@ final class Token
     public $position;
 
     /**
-     * @param string|int $value
-     * @param T|null     $type
+     * @param V      $value
+     * @param T|null $type
      */
     public function __construct($value, $type, int $position)
     {

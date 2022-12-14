@@ -5,9 +5,27 @@
     "docsSlug": "doctrine-lexer",
     "versions": [
         {
+            "name": "3.0",
+            "branchName": "3.0.x",
+            "slug": "latest",
+            "upcoming": true
+        },
+        {
+            "name": "2.1",
+            "branchName": "2.1.x",
+            "upcoming": true
+        },
+        {
+            "name": "2.0",
+            "branchName": "2.0.x",
+            "aliases": [
+                "current",
+                "stable"
+            ]
+        },
+        {
             "name": "1.3",
             "branchName": "1.3.x",
-            "slug": "latest",
             "upcoming": true
         },
         {
@@ -15,11 +33,7 @@
             "branchName": "1.2.x",
             "slug": "1.2",
             "current": true,
-            "maintained": true,
-            "aliases": [
-                "current",
-                "stable"
-            ]
+            "maintained": true
         },
         {
             "name": "1.1",

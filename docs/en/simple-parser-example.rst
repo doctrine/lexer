@@ -11,6 +11,9 @@ It tokenizes a string to ``T_UPPER``, ``T_LOWER`` and``T_NUMBER`` tokens:
 
     use Doctrine\Common\Lexer\AbstractLexer;
 
+    /**
+     * @extends AbstractLexer<CharacterTypeLexer::T_*, string>
+     */
     class CharacterTypeLexer extends AbstractLexer
     {
         const T_UPPER =  1;
