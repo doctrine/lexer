@@ -13,6 +13,7 @@ use function in_array;
 
 /**
  * @template T of UnitEnum|string|int
+ * @template V of string|int
  * @implements ArrayAccess<string,mixed>
  */
 final class Token implements ArrayAccess
@@ -21,7 +22,7 @@ final class Token implements ArrayAccess
      * The string value of the token in the input string
      *
      * @readonly
-     * @var string|int
+     * @var V
      */
     public $value;
 
@@ -42,8 +43,8 @@ final class Token implements ArrayAccess
     public $position;
 
     /**
-     * @param string|int $value
-     * @param T|null     $type
+     * @param V      $value
+     * @param T|null $type
      */
     public function __construct($value, $type, int $position)
     {
@@ -83,7 +84,7 @@ final class Token implements ArrayAccess
      * @return mixed
      * @psalm-return (
      *     O is 'value'
-     *     ? string|int
+     *     ? V
      *     : (
      *         O is 'type'
      *         ? T|null

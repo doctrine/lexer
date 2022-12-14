@@ -9,7 +9,7 @@ use Doctrine\Common\Lexer\AbstractLexer;
 use function in_array;
 use function is_numeric;
 
-/** @extends AbstractLexer<TokenType> */
+/** @extends AbstractLexer<TokenType, string|int> */
 class EnumLexer extends AbstractLexer
 {
     /**
