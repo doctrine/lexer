@@ -6,8 +6,5 @@ parameters:
 
   ignoreErrors:
     -
-      message: '#^Property Doctrine\\Common\\Lexer\\AbstractLexer\<T of int\|string\|UnitEnum,V of int\|string\>\:\:\$tokens \(array\<int, Doctrine\\Common\\Lexer\\Token\<T of int\|string\|UnitEnum, V of int\|string\>\>\) does not accept non\-empty\-array\<int, Doctrine\\Common\\Lexer\\Token\<T of int\|string\|UnitEnum, int\|string\>\>\.$#'
-      path: src/AbstractLexer.php
-    -
       message: '#^Method Doctrine\\Tests\\Common\\Lexer\\AbstractLexerTest\:\:dataProvider\(\) should return array\<int, array\{string, array\<int, Doctrine\\Common\\Lexer\\Token\<string, int\|string\>\>\}\> but returns array\{array\{''price\=10'', array\{Doctrine\\Common\\Lexer\\Token\<string, string\>, Doctrine\\Common\\Lexer\\Token\<string, string\>, Doctrine\\Common\\Lexer\\Token\<string, int\>\}\}\}\.$#'
       path: tests/AbstractLexerTest.php
