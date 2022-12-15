@@ -16,8 +16,7 @@ use const LC_ALL;
 
 class AbstractLexerTest extends TestCase
 {
-    /** @var ConcreteLexer */
-    private $concreteLexer;
+    private ConcreteLexer $concreteLexer;
 
     public function setUp(): void
     {
@@ -29,9 +28,7 @@ class AbstractLexerTest extends TestCase
         setlocale(LC_ALL, null);
     }
 
-    /**
-     * @psalm-return list<array{string, list<Token<string, string|int>>}>
-     */
+    /** @psalm-return list<array{string, list<Token<string, string|int>>}> */
     public function dataProvider(): array
     {
         return [
@@ -113,7 +110,7 @@ class AbstractLexerTest extends TestCase
 
         $this->assertEquals(
             new Token('=', 'operator', 5),
-            $this->concreteLexer->lookahead
+            $this->concreteLexer->lookahead,
         );
     }
 
@@ -125,7 +122,7 @@ class AbstractLexerTest extends TestCase
 
         $this->assertEquals(
             new Token("\xE9=10", 'string', 0),
-            $this->concreteLexer->lookahead
+            $this->concreteLexer->lookahead,
         );
     }
 
@@ -172,9 +169,7 @@ class AbstractLexerTest extends TestCase
         $this->assertNull($this->concreteLexer->peek());
     }
 
-    /**
-     * @psalm-return list<array{string, int, string}>
-     */
+    /** @psalm-return list<array{string, int, string}> */
     public function inputUntilPositionDataProvider(): array
     {
         return [
@@ -182,13 +177,11 @@ class AbstractLexerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider inputUntilPositionDataProvider
-     */
+    /** @dataProvider inputUntilPositionDataProvider */
     public function testGetInputUntilPosition(
         string $input,
         int $position,
-        string $expectedInput
+        string $expectedInput,
     ): void {
         $this->concreteLexer->setInput($input);
 
@@ -242,15 +235,12 @@ class AbstractLexerTest extends TestCase
         $this->assertSame('fake_token', $this->concreteLexer->getLiteral('fake_token'));
     }
 
-    /**
-     * @requires PHP 8.1
-     */
     public function testGetLiteralWithEnumLexer(): void
     {
         $enumLexer = new EnumLexer();
         $this->assertSame(
             'Doctrine\Tests\Common\Lexer\TokenType::OPERATOR',
-            $enumLexer->getLiteral(TokenType::OPERATOR)
+            $enumLexer->getLiteral(TokenType::OPERATOR),
         );
     }
 

@@ -12,7 +12,7 @@ use function is_numeric;
 /** @extends AbstractLexer<string, string|int> */
 class ConcreteLexer extends AbstractLexer
 {
-    public const INT = 'int';
+    final public const INT = 'int';
 
     /**
      * {@inheritDoc}
@@ -37,10 +37,7 @@ class ConcreteLexer extends AbstractLexer
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getType(&$value): string
+    protected function getType(string|int|float &$value): string
     {
         if (is_numeric($value)) {
             $value = (int) $value;

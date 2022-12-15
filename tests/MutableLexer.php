@@ -10,7 +10,7 @@ use Doctrine\Common\Lexer\AbstractLexer;
 class MutableLexer extends AbstractLexer
 {
     /** @var string[] */
-    private $catchablePatterns = [];
+    private array $catchablePatterns = [];
 
     public function addCatchablePattern(string $pattern): void
     {
@@ -33,10 +33,7 @@ class MutableLexer extends AbstractLexer
         return ['[\s,]+'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getType(&$value): int
+    protected function getType(string &$value): int
     {
         return 1;
     }

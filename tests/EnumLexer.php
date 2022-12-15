@@ -35,10 +35,7 @@ class EnumLexer extends AbstractLexer
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getType(&$value): TokenType
+    protected function getType(string &$value): TokenType
     {
         if (is_numeric($value)) {
             $value = (int) $value;
