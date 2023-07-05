@@ -164,6 +164,7 @@ abstract class AbstractLexer
      *
      * @return bool
      *
+     * @phpstan-impure
      * @psalm-assert-if-true !null $this->lookahead
      */
     public function moveNext()
@@ -220,6 +221,8 @@ abstract class AbstractLexer
      *
      * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
      * @psalm-return Token<T, V>|null
+     *
+     * @phpstan-impure
      */
     public function glimpse()
     {
