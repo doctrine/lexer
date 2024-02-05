@@ -9,7 +9,7 @@
     <config name="php_version" value="70100"/>
 
     <!-- Ignore warnings and show progress of the run -->
-    <arg value="np"/>
+    <arg value="nps"/>
 
     <file>src</file>
     <file>tests</file>
@@ -31,5 +31,10 @@
     <rule ref="SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment">
         <!-- Remove when dropping PHPUnit 7 -->
         <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
+        <!-- The sniff does not interpret @inheritDoc correctly anymore -->
+        <exclude-pattern>src/Token.php</exclude-pattern>
     </rule>
 </ruleset>

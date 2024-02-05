@@ -70,7 +70,7 @@ abstract class AbstractLexer
     /**
      * Composed regex for input parsing.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     private $regex;
 
