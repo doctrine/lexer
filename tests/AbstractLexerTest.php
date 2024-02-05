@@ -29,7 +29,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /** @psalm-return list<array{string, list<Token<string, string|int>>}> */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             [
@@ -170,7 +170,7 @@ class AbstractLexerTest extends TestCase
     }
 
     /** @psalm-return list<array{string, int, string}> */
-    public function inputUntilPositionDataProvider(): array
+    public static function inputUntilPositionDataProvider(): array
     {
         return [
             ['price=10', 5, 'price'],

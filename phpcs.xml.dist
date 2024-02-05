@@ -9,7 +9,7 @@
     <config name="php_version" value="80100"/>
 
     <!-- Ignore warnings and show progress of the run -->
-    <arg value="np"/>
+    <arg value="nps"/>
 
     <file>src</file>
     <file>tests</file>
