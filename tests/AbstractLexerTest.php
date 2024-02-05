@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Doctrine\Tests\Common\Lexer;
 
 use Doctrine\Common\Lexer\Token;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function array_map;
@@ -82,11 +83,8 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals($expectedTokens[0], $this->concreteLexer->lookahead);
     }
 
-    /**
-     * @psalm-param list<Token<string, string|int>>  $expectedTokens
-     *
-     * @dataProvider dataProvider
-     */
+    /** @psalm-param list<Token<string, string|int>>  $expectedTokens */
+    #[DataProvider('dataProvider')]
     public function testMoveNext(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
@@ -126,11 +124,8 @@ class AbstractLexerTest extends TestCase
         );
     }
 
-    /**
-     * @psalm-param list<Token<string, string|int>> $expectedTokens
-     *
-     * @dataProvider dataProvider
-     */
+    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    #[DataProvider('dataProvider')]
     public function testPeek(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
@@ -146,11 +141,8 @@ class AbstractLexerTest extends TestCase
         $this->assertNull($this->concreteLexer->peek());
     }
 
-    /**
-     * @psalm-param list<Token<string, string|int>> $expectedTokens
-     *
-     * @dataProvider dataProvider
-     */
+    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    #[DataProvider('dataProvider')]
     public function testGlimpse(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
@@ -177,7 +169,7 @@ class AbstractLexerTest extends TestCase
         ];
     }
 
-    /** @dataProvider inputUntilPositionDataProvider */
+    #[DataProvider('inputUntilPositionDataProvider')]
     public function testGetInputUntilPosition(
         string $input,
         int $position,
@@ -188,11 +180,8 @@ class AbstractLexerTest extends TestCase
         $this->assertSame($expectedInput, $this->concreteLexer->getInputUntilPosition($position));
     }
 
-    /**
-     * @psalm-param list<Token<string, string|int>> $expectedTokens
-     *
-     * @dataProvider dataProvider
-     */
+    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    #[DataProvider('dataProvider')]
     public function testIsNextToken(string $input, array $expectedTokens): void
     {
         $this->concreteLexer->setInput($input);
@@ -205,11 +194,8 @@ class AbstractLexerTest extends TestCase
         }
     }
 
-    /**
-     * @psalm-param list<Token<string, string|int>> $expectedTokens
-     *
-     * @dataProvider dataProvider
-     */
+    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    #[DataProvider('dataProvider')]
     public function testIsNextTokenAny(string $input, array $expectedTokens): void
     {
         $allTokenTypes = array_map(static function ($token): string {
