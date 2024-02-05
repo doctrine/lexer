@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 <psalm
     errorLevel="1"
-    phpVersion="8.1"
+    phpVersion="8.3"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="true"
 >
     <projectFiles>
         <directory name="src"/>
@@ -52,6 +54,12 @@
                 <file name="src/Token.php" />
             </errorLevel>
         </MixedReturnStatement>
+        <PossiblyUnusedProperty>
+            <errorLevel type="suppress">
+                <!-- TODO: Cover this property in a test -->
+                <referencedProperty name="Doctrine\Common\Lexer\Token::$position"/>
+            </errorLevel>
+        </PossiblyUnusedProperty>
         <ReferenceConstraintViolation>
             <errorLevel type="suppress">
                 <!-- https://github.com/vimeo/psalm/issues/8891 -->
