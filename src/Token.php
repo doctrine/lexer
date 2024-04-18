@@ -20,7 +20,7 @@ final class Token
      * @readonly
      * @var V
      */
-    public string|int $value;
+    public string|int|float $value;
 
     /**
      * The type of the token (identifier, numeric, string, input parameter, none)
@@ -41,7 +41,7 @@ final class Token
      * @param V      $value
      * @param T|null $type
      */
-    public function __construct(string|int $value, $type, int $position)
+    public function __construct(string|int|float $value, $type, int $position)
     {
         $this->value    = $value;
         $this->type     = $type;
