@@ -32,6 +32,7 @@
                 <file name="src/AbstractLexer.php" />
             </errorLevel>
         </InvalidReturnType>
+        <MissingClassConstType errorLevel="suppress" />
         <MixedAssignment>
             <errorLevel type="suppress">
                 <file name="src/AbstractLexer.php" />
