@@ -24,6 +24,8 @@ on:
 jobs:
   phpunit:
     name: "PHPUnit"
-    uses: "doctrine/.github/.github/workflows/continuous-integration.yml@4.0.0"
+    uses: "doctrine/.github/.github/workflows/continuous-integration.yml@5.0.1"
     with:
       php-versions: '["8.1", "8.2", "8.3"]'
+    secrets:
+      CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}"
