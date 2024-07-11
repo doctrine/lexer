@@ -20,7 +20,7 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
  * Base class for writing simple lexers, i.e. for creating small DSLs.
  *
  * @template T of UnitEnum|string|int
- * @template V of string|int
+ * @template V of string|int|float|bool
  */
 abstract class AbstractLexer
 {
