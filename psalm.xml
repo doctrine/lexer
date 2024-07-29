@@ -68,5 +68,8 @@
                 <file name="tests/AbstractLexerTest.php" />
             </errorLevel>
         </RedundantConditionGivenDocblockType>
+
+        <!-- cannot fix that because we support PHP 8.1+ -->
+        <MissingClassConstType errorLevel="suppress" />
     </issueHandlers>
 </psalm>
