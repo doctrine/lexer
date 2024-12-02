@@ -31,9 +31,7 @@
     "require-dev": {
         "doctrine/coding-standard": "^12",
         "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^10.5",
-        "psalm/plugin-phpunit": "^0.18.3",
-        "vimeo/psalm": "^5.21"
+        "phpunit/phpunit": "^10.5"
     },
     "autoload": {
         "psr-4": {

@@ -29,7 +29,7 @@ class AbstractLexerTest extends TestCase
         setlocale(LC_ALL, null);
     }
 
-    /** @psalm-return list<array{string, list<Token<string, string|int>>}> */
+    /** @phpstan-return list<array{string, list<Token<string, string|int>>}> */
     public static function dataProvider(): array
     {
         return [
@@ -83,7 +83,7 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals($expectedTokens[0], $this->concreteLexer->lookahead);
     }
 
-    /** @psalm-param list<Token<string, string|int>>  $expectedTokens */
+    /** @phpstan-param list<Token<string, string|int>>  $expectedTokens */
     #[DataProvider('dataProvider')]
     public function testMoveNext(string $input, array $expectedTokens): void
     {
@@ -124,7 +124,7 @@ class AbstractLexerTest extends TestCase
         );
     }
 
-    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    /** @phpstan-param list<Token<string, string|int>> $expectedTokens */
     #[DataProvider('dataProvider')]
     public function testPeek(string $input, array $expectedTokens): void
     {
@@ -141,7 +141,7 @@ class AbstractLexerTest extends TestCase
         $this->assertNull($this->concreteLexer->peek());
     }
 
-    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    /** @phpstan-param list<Token<string, string|int>> $expectedTokens */
     #[DataProvider('dataProvider')]
     public function testGlimpse(string $input, array $expectedTokens): void
     {
@@ -161,7 +161,7 @@ class AbstractLexerTest extends TestCase
         $this->assertNull($this->concreteLexer->peek());
     }
 
-    /** @psalm-return list<array{string, int, string}> */
+    /** @phpstan-return list<array{string, int, string}> */
     public static function inputUntilPositionDataProvider(): array
     {
         return [
@@ -180,7 +180,7 @@ class AbstractLexerTest extends TestCase
         $this->assertSame($expectedInput, $this->concreteLexer->getInputUntilPosition($position));
     }
 
-    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    /** @phpstan-param list<Token<string, string|int>> $expectedTokens */
     #[DataProvider('dataProvider')]
     public function testIsNextToken(string $input, array $expectedTokens): void
     {
@@ -194,7 +194,7 @@ class AbstractLexerTest extends TestCase
         }
     }
 
-    /** @psalm-param list<Token<string, string|int>> $expectedTokens */
+    /** @phpstan-param list<Token<string, string|int>> $expectedTokens */
     #[DataProvider('dataProvider')]
     public function testIsNextTokenAny(string $input, array $expectedTokens): void
     {

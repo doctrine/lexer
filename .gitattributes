@@ -11,4 +11,3 @@
 /phpcs.xml.dist export-ignore
 /phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
-/psalm.xml export-ignore
