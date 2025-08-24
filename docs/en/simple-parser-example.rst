@@ -23,7 +23,7 @@ It tokenizes a string to ``T_UPPER``, ``T_LOWER`` and``T_NUMBER`` tokens:
         protected function getCatchablePatterns(): array
         {
             return [
-                '[a-bA-Z0-9]',
+                '[a-zA-Z0-9]',
             ];
         }
 
