@@ -74,10 +74,8 @@ abstract class AbstractLexer
      * Any unprocessed tokens from any previous input are lost.
      *
      * @param string $input The input to be tokenized.
-     *
-     * @return void
      */
-    public function setInput(string $input)
+    public function setInput(string $input): void
     {
         $this->input  = $input;
         $this->tokens = [];
@@ -88,10 +86,8 @@ abstract class AbstractLexer
 
     /**
      * Resets the lexer.
-     *
-     * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $this->lookahead = null;
         $this->token     = null;
@@ -101,10 +97,8 @@ abstract class AbstractLexer
 
     /**
      * Resets the peek pointer to 0.
-     *
-     * @return void
      */
-    public function resetPeek()
+    public function resetPeek(): void
     {
         $this->peek = 0;
     }
@@ -113,20 +107,16 @@ abstract class AbstractLexer
      * Resets the lexer position on the input to the given position.
      *
      * @param int $position Position to place the lexical scanner.
-     *
-     * @return void
      */
-    public function resetPosition(int $position = 0)
+    public function resetPosition(int $position = 0): void
     {
         $this->position = $position;
     }
 
     /**
      * Retrieve the original lexer's input until a given position.
-     *
-     * @return string
      */
-    public function getInputUntilPosition(int $position)
+    public function getInputUntilPosition(int $position): string
     {
         return substr($this->input, 0, $position);
     }
@@ -136,11 +126,9 @@ abstract class AbstractLexer
      *
      * @param T $type
      *
-     * @return bool
-     *
      * @phpstan-assert-if-true !=null $this->lookahead
      */
-    public function isNextToken(int|string|UnitEnum $type)
+    public function isNextToken(int|string|UnitEnum $type): bool
     {
         return $this->lookahead !== null && $this->lookahead->isA($type);
     }
@@ -150,11 +138,9 @@ abstract class AbstractLexer
      *
      * @param list<T> $types
      *
-     * @return bool
-     *
      * @phpstan-assert-if-true !=null $this->lookahead
      */
-    public function isNextTokenAny(array $types)
+    public function isNextTokenAny(array $types): bool
     {
         return $this->lookahead !== null && $this->lookahead->isA(...$types);
     }
@@ -162,11 +148,9 @@ abstract class AbstractLexer
     /**
      * Moves to the next token in the input string.
      *
-     * @return bool
-     *
      * @phpstan-assert-if-true !null $this->lookahead
      */
-    public function moveNext()
+    public function moveNext(): bool
     {
         $this->peek      = 0;
         $this->token     = $this->lookahead;
@@ -180,10 +164,8 @@ abstract class AbstractLexer
      * Tells the lexer to skip input tokens until it sees a token with the given value.
      *
      * @param T $type The token type to skip until.
-     *
-     * @return void
      */
-    public function skipUntil(int|string|UnitEnum $type)
+    public function skipUntil(int|string|UnitEnum $type): void
     {
         while ($this->lookahead !== null && ! $this->lookahead->isA($type)) {
             $this->moveNext();
@@ -192,10 +174,8 @@ abstract class AbstractLexer
 
     /**
      * Checks if given value is identical to the given token.
-     *
-     * @return bool
      */
-    public function isA(string $value, int|string|UnitEnum $token)
+    public function isA(string $value, int|string|UnitEnum $token): bool
     {
         return $this->getType($value) === $token;
     }
@@ -205,7 +185,7 @@ abstract class AbstractLexer
      *
      * @return Token<T, V>|null The next token or NULL if there are no more tokens ahead.
      */
-    public function peek()
+    public function peek(): Token|null
     {
         if (isset($this->tokens[$this->position + $this->peek])) {
             return $this->tokens[$this->position + $this->peek++];
@@ -219,7 +199,7 @@ abstract class AbstractLexer
      *
      * @return Token<T, V>|null The next token or NULL if there are no more tokens ahead.
      */
-    public function glimpse()
+    public function glimpse(): Token|null
     {
         $peek       = $this->peek();
         $this->peek = 0;
@@ -231,10 +211,8 @@ abstract class AbstractLexer
      * Scans the input string for tokens.
      *
      * @param string $input A query string.
-     *
-     * @return void
      */
-    protected function scan(string $input)
+    protected function scan(string $input): void
     {
         if (! isset($this->regex)) {
             $this->regex = sprintf(
@@ -270,10 +248,8 @@ abstract class AbstractLexer
      * Gets the literal for a given token.
      *
      * @param T $token
-     *
-     * @return int|string
      */
-    public function getLiteral(int|string|UnitEnum $token)
+    public function getLiteral(int|string|UnitEnum $token): int|string
     {
         if ($token instanceof UnitEnum) {
             return $token::class . '::' . $token->name;
@@ -295,10 +271,8 @@ abstract class AbstractLexer
 
     /**
      * Regex modifiers
-     *
-     * @return string
      */
-    protected function getModifiers()
+    protected function getModifiers(): string
     {
         return 'iu';
     }
@@ -308,14 +282,14 @@ abstract class AbstractLexer
      *
      * @return string[]
      */
-    abstract protected function getCatchablePatterns();
+    abstract protected function getCatchablePatterns(): array;
 
     /**
      * Lexical non-catchable patterns.
      *
      * @return string[]
      */
-    abstract protected function getNonCatchablePatterns();
+    abstract protected function getNonCatchablePatterns(): array;
 
     /**
      * Retrieve token type. Also processes the token value if necessary.

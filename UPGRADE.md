@@ -6,6 +6,11 @@ awareness about deprecated code.
 - Use of our low-overhead runtime deprecation API, details:
   https://github.com/doctrine/deprecations/
 
+# Upgrade to 4.0.0
+
+Type declarations have been added wherever possible. The codebase is now fully
+typed.
+
 # Upgrade to 3.0.0
 
 `Doctrine\Common\Lexer\Token` no longer implements `ArrayAccess`.
