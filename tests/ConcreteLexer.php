@@ -12,7 +12,7 @@ use function is_numeric;
 /** @extends AbstractLexer<string, string|int> */
 class ConcreteLexer extends AbstractLexer
 {
-    final public const INT = 'int';
+    final public const string INT = 'int';
 
     /**
      * {@inheritDoc}

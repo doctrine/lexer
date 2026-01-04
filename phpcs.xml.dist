@@ -6,7 +6,7 @@
     <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors" />
 
-    <config name="php_version" value="80100"/>
+    <config name="php_version" value="80400"/>
 
     <!-- Ignore warnings and show progress of the run -->
     <arg value="nps"/>
@@ -15,9 +15,6 @@
     <file>tests</file>
 
     <rule ref="Doctrine">
-        <!-- Will cause BC breaks to method signatures - disabled for now -->
-        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint" />
-
         <!-- Disabled to avoid class renaming - to be handled in a separate PR -->
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming" />
     </rule>
