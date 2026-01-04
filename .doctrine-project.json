@@ -20,7 +20,7 @@
             "name": "2.1",
             "branchName": "2.1.x",
             "slug": "2.1",
-            "maintained": true
+            "maintained": false
         },
         {
             "name": "2.0",

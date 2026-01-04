@@ -138,7 +138,7 @@ abstract class AbstractLexer
      *
      * @return bool
      *
-     * @psalm-assert-if-true !=null $this->lookahead
+     * @phpstan-assert-if-true !=null $this->lookahead
      */
     public function isNextToken(int|string|UnitEnum $type)
     {
@@ -152,7 +152,7 @@ abstract class AbstractLexer
      *
      * @return bool
      *
-     * @psalm-assert-if-true !=null $this->lookahead
+     * @phpstan-assert-if-true !=null $this->lookahead
      */
     public function isNextTokenAny(array $types)
     {
@@ -165,7 +165,7 @@ abstract class AbstractLexer
      * @return bool
      *
      * @phpstan-impure
-     * @psalm-assert-if-true !null $this->lookahead
+     * @phpstan-assert-if-true !null $this->lookahead
      */
     public function moveNext()
     {
