@@ -12,12 +12,11 @@ use function in_array;
  * @template T of UnitEnum|string|int
  * @template V of string|int|float|bool
  */
-final class Token
+final readonly class Token
 {
     /**
      * The string value of the token in the input string
      *
-     * @readonly
      * @var V
      */
     public string|int|float|bool $value;
@@ -25,16 +24,11 @@ final class Token
     /**
      * The type of the token (identifier, numeric, string, input parameter, none)
      *
-     * @readonly
      * @var T|null
      */
-    public $type;
+    public UnitEnum|string|int|null $type;
 
-    /**
-     * The position of the token in the input string
-     *
-     * @readonly
-     */
+    /** The position of the token in the input string */
     public int $position;
 
     /**
