@@ -10,7 +10,7 @@ use function in_array;
 
 /**
  * @template T of UnitEnum|string|int
- * @template V of string|int
+ * @template-covariant V of string|int
  */
 final class Token
 {
