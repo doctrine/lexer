@@ -30,7 +30,7 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^14",
-        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan": "^2",
         "phpunit/phpunit": "^10.5.58"
     },
     "autoload": {
