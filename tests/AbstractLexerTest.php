@@ -6,6 +6,7 @@ namespace Doctrine\Tests\Common\Lexer;
 
 use Doctrine\Common\Lexer\AbstractLexer;
 use Doctrine\Common\Lexer\Token;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -22,11 +23,13 @@ class AbstractLexerTest extends TestCase
 {
     private ConcreteLexer $concreteLexer;
 
+    #[Override]
     public function setUp(): void
     {
         $this->concreteLexer = new ConcreteLexer();
     }
 
+    #[Override]
     public function tearDown(): void
     {
         setlocale(LC_ALL, null);
@@ -291,6 +294,7 @@ class AbstractLexerTest extends TestCase
             final public const int T_FLOAT   = 4;
             final public const int T_BOOL    = 8;
 
+            #[Override]
             protected function getType(string|int|float|bool &$value): int
             {
                 if ($value === 'y') {
@@ -313,6 +317,7 @@ class AbstractLexerTest extends TestCase
             }
 
             /** {@inheritDoc} */
+            #[Override]
             protected function getCatchablePatterns(): array
             {
                 return [
@@ -322,6 +327,7 @@ class AbstractLexerTest extends TestCase
             }
 
             /** {@inheritDoc} */
+            #[Override]
             protected function getNonCatchablePatterns(): array
             {
                 return ['\s+'];

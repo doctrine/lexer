@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Doctrine\Tests\Common\Lexer;
 
 use Doctrine\Common\Lexer\AbstractLexer;
+use Override;
 
 /** @extends AbstractLexer<int, string> */
 class MutableLexer extends AbstractLexer
@@ -20,6 +21,7 @@ class MutableLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function getCatchablePatterns(): array
     {
         return $this->catchablePatterns;
@@ -28,11 +30,13 @@ class MutableLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function getNonCatchablePatterns(): array
     {
         return ['[\s,]+'];
     }
 
+    #[Override]
     protected function getType(string &$value): int
     {
         return 1;

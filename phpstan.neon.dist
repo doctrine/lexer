@@ -1,4 +1,5 @@
 parameters:
+  checkMissingOverrideMethodAttribute: true
   level: max
   paths:
     - %rootDir%/../../../src
