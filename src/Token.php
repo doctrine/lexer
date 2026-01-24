@@ -15,31 +15,25 @@ use function in_array;
 final readonly class Token
 {
     /**
-     * The string value of the token in the input string
-     *
-     * @var V
-     */
-    public string|int|float|bool $value;
-
-    /**
-     * The type of the token (identifier, numeric, string, input parameter, none)
-     *
-     * @var T|null
-     */
-    public UnitEnum|string|int|null $type;
-
-    /** The position of the token in the input string */
-    public int $position;
-
-    /**
      * @param V      $value
      * @param T|null $type
      */
-    public function __construct(string|int|float|bool $value, $type, int $position)
-    {
-        $this->value    = $value;
-        $this->type     = $type;
-        $this->position = $position;
+    public function __construct(
+        /**
+         * The string value of the token in the input string
+         *
+         * @var V
+         */
+        public string|int|float|bool $value,
+        /**
+         * The type of the token (identifier, numeric, string, input parameter, none)
+         *
+         * @var T|null
+         */
+        public UnitEnum|string|int|null $type,
+        /** The position of the token in the input string */
+        public int $position,
+    ) {
     }
 
     /** @param T ...$types */
