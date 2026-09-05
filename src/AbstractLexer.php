@@ -7,6 +7,7 @@ namespace Doctrine\Common\Lexer;
 use ReflectionClass;
 use UnitEnum;
 
+use function count;
 use function implode;
 use function preg_split;
 use function sprintf;
@@ -112,13 +113,31 @@ abstract class AbstractLexer
     /**
      * Resets the lexer position on the input to the given position.
      *
-     * @param int $position Position to place the lexical scanner.
+     * @param int $position Character offset into the input, as found in
+     *                      Token::$position; not an index in the token list.
      *
      * @return void
      */
     public function resetPosition(int $position = 0)
     {
-        $this->position = $position;
+        $this->position = $this->findTokenIndexAtOrAfterOffset($position);
+    }
+
+    /**
+     * Finds the index of the first token at or after the given offset.
+     *
+     * Token offsets are strictly increasing, so a linear scan suffices.
+     * Returns one past the end when there is no such token.
+     */
+    private function findTokenIndexAtOrAfterOffset(int $offset): int
+    {
+        foreach ($this->tokens as $index => $token) {
+            if ($token->position >= $offset) {
+                return $index;
+            }
+        }
+
+        return count($this->tokens);
     }
 
     /**
