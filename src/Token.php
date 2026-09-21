@@ -23,6 +23,7 @@ final class Token
          * The string value of the token in the input string
          *
          * @readonly
+         * @phpstan-ignore generics.variance (PHPStan does not respect the readonly flag properly)
          */
         public string|int|float|bool $value,
         /**
