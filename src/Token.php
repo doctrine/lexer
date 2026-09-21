@@ -10,7 +10,7 @@ use function in_array;
 
 /**
  * @template T of UnitEnum|string|int
- * @template V of string|int|float|bool
+ * @template-covariant V of string|int|float|bool
  */
 final class Token
 {
@@ -23,6 +23,7 @@ final class Token
          * The string value of the token in the input string
          *
          * @readonly
+         * @phpstan-ignore generics.variance (PHPStan does not respect the readonly flag properly)
          */
         public string|int|float|bool $value,
         /**
