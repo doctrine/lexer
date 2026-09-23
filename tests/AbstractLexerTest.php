@@ -119,6 +119,24 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals($target, $this->concreteLexer->lookahead);
     }
 
+    public function testResetPositionPastTheLastToken(): void
+    {
+        $this->concreteLexer->setInput('price=10');
+
+        $tokenCount = 0;
+        while ($this->concreteLexer->moveNext()) {
+            $tokenCount++;
+        }
+
+        $this->assertSame(3, $tokenCount);
+
+        // No token starts at or after this offset, so the lexer lands at the end.
+        $this->concreteLexer->resetPosition(99);
+
+        $this->assertFalse($this->concreteLexer->moveNext());
+        $this->assertNull($this->concreteLexer->lookahead);
+    }
+
     /** @phpstan-param list<Token<string, string|int>>  $expectedTokens */
     #[DataProvider('dataProvider')]
     public function testMoveNext(string $input, array $expectedTokens): void

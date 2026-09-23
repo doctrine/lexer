@@ -114,7 +114,7 @@ abstract class AbstractLexer
      * Resets the lexer position on the input to the given position.
      *
      * @param int $position Character offset into the input, as found in
-     *                      Token::$position; not an index in the token list.
+     *                      Token::$position.
      *
      * @return void
      */
