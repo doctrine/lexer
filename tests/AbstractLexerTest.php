@@ -86,6 +86,57 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals($expectedTokens[0], $this->concreteLexer->lookahead);
     }
 
+    /**
+     * @see https://github.com/doctrine/lexer/issues/53
+     *
+     * resetPosition() takes a character offset, not a token index. The input
+     * below has multi-character tokens, so the second token's offset (6)
+     * differs from its index (1).
+     */
+    public function testResetPositionByTokenPosition(): void
+    {
+        $this->concreteLexer->setInput('price=10');
+
+        $this->assertTrue($this->concreteLexer->moveNext());
+        $this->assertTrue($this->concreteLexer->moveNext());
+
+        $target = $this->concreteLexer->lookahead;
+        $this->assertSame('=', $target->value);
+        $this->assertSame(5, $target->position);
+
+        // Move the cursor past the index that used to coincide with the target.
+        $remainingTokens = 0;
+        while ($this->concreteLexer->moveNext()) {
+            $remainingTokens++;
+        }
+
+        $this->assertSame(1, $remainingTokens);
+        $this->assertNull($this->concreteLexer->lookahead);
+
+        $this->concreteLexer->resetPosition($target->position);
+
+        $this->assertTrue($this->concreteLexer->moveNext());
+        $this->assertEquals($target, $this->concreteLexer->lookahead);
+    }
+
+    public function testResetPositionPastTheLastToken(): void
+    {
+        $this->concreteLexer->setInput('price=10');
+
+        $tokenCount = 0;
+        while ($this->concreteLexer->moveNext()) {
+            $tokenCount++;
+        }
+
+        $this->assertSame(3, $tokenCount);
+
+        // No token starts at or after this offset, so the lexer lands at the end.
+        $this->concreteLexer->resetPosition(99);
+
+        $this->assertFalse($this->concreteLexer->moveNext());
+        $this->assertNull($this->concreteLexer->lookahead);
+    }
+
     /** @phpstan-param list<Token<string, string|int>>  $expectedTokens */
     #[DataProvider('dataProvider')]
     public function testMoveNext(string $input, array $expectedTokens): void
