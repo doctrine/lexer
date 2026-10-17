@@ -234,8 +234,7 @@ Lexer implementation:
 
         public function __construct(string $dql)
         {
-            $this->lexer = new Lexer();
-            $this->lexer->setInput($dql);
+            $this->lexer = new Lexer($dql);
         }
 
         // ...
