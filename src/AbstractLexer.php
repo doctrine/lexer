@@ -320,5 +320,5 @@ abstract class AbstractLexer
      *
      * @param-out V $value
      */
-    abstract protected function getType(string &$value);
+    abstract protected function getType(string &$value): UnitEnum|string|int|null;
 }
