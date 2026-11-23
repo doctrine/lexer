@@ -5,9 +5,15 @@
     "docsSlug": "doctrine-lexer",
     "versions": [
         {
+            "name": "4.0",
+            "branchName": "4.0.x",
+            "slug": "latest",
+            "upcoming": true
+        },
+        {
             "name": "3.1",
             "branchName": "3.1.x",
-            "slug": "latest",
+            "slug": "3.1",
             "upcoming": true
         },
         {
