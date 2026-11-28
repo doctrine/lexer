@@ -12,11 +12,26 @@ use PHPUnit\Framework\TestCase;
 use function array_map;
 use function assert;
 use function count;
+use function explode;
+use function fclose;
+use function feof;
+use function fread;
+use function function_exists;
+use function hrtime;
 use function is_int;
 use function is_numeric;
+use function proc_close;
+use function proc_get_status;
+use function proc_open;
+use function proc_terminate;
 use function setlocale;
+use function str_repeat;
+use function stream_select;
+use function stream_set_blocking;
+use function usleep;
 
 use const LC_ALL;
+use const PHP_BINARY;
 
 class AbstractLexerTest extends TestCase
 {
@@ -388,5 +403,207 @@ class AbstractLexerTest extends TestCase
         $token = $lexer->peek();
         assert($token !== null);
         self::assertTrue($token->value, 'expect a real bool, not a numerical string');
+    }
+
+    public function testScanLargeInputPreservesTokens(): void
+    {
+        $repeats = 8000;
+        $this->concreteLexer->setInput(str_repeat('price=10 ', $repeats));
+
+        $count = 0;
+        $first = null;
+        $last  = null;
+        while ($this->concreteLexer->moveNext()) {
+            if ($first === null) {
+                $first = $this->concreteLexer->lookahead;
+            }
+
+            $last = $this->concreteLexer->lookahead;
+            $count++;
+        }
+
+        self::assertSame($repeats * 3, $count);
+        self::assertEquals(new Token('price', 'string', 0), $first);
+        self::assertEquals(new Token(10, 'int', ($repeats - 1) * 9 + 6), $last);
+
+        // Unmatched spans plus named/nested/optional capturing groups above threshold
+        $complexLexer = new MutableLexer();
+        $complexLexer->addCatchablePattern('(?P<pair>(foo)?(bar))');
+        $prefix = str_repeat('z', 70000);
+        $complexLexer->setInput($prefix . ' foobar bar tail');
+
+        $collected = [];
+        while ($complexLexer->moveNext()) {
+            $collected[] = [$complexLexer->lookahead->value, $complexLexer->lookahead->position];
+        }
+
+        self::assertSame(
+            [
+                [$prefix, 0],
+                ['foobar', 70001],
+                ['foobar', 70001],
+                ['foo', 70001],
+                ['bar', 70004],
+                ['bar', 70008],
+                ['bar', 70008],
+                ['bar', 70008],
+                ['tail', 70012],
+            ],
+            $collected,
+        );
+
+        // Invalid UTF-8 above threshold preserves the PHP bug #78122 single-token fallback
+        $badUtf8 = str_repeat('a=', 35000) . "\xFF";
+        $this->concreteLexer->setInput($badUtf8);
+        self::assertTrue($this->concreteLexer->moveNext());
+        self::assertEquals(new Token($badUtf8, 'string', 0), $this->concreteLexer->lookahead);
+        self::assertFalse($this->concreteLexer->moveNext());
+
+        // Zero-width pattern above threshold falls back cleanly to preg_split() semantics
+        $zeroWidthLexer = new /** @template-extends AbstractLexer<int, string> */ class () extends AbstractLexer {
+            /** {@inheritDoc} */
+            protected function getCatchablePatterns(): array
+            {
+                return ['[a-z]+'];
+            }
+
+            /** {@inheritDoc} */
+            protected function getNonCatchablePatterns(): array
+            {
+                return [];
+            }
+
+            protected function getType(string &$value): int
+            {
+                return 1;
+            }
+        };
+
+        $zwInput = str_repeat('a', 70000) . '!é';
+        $zeroWidthLexer->setInput($zwInput);
+        $zwTokens = [];
+        while ($zeroWidthLexer->moveNext()) {
+            $zwTokens[] = [$zeroWidthLexer->lookahead->value, $zeroWidthLexer->lookahead->position];
+        }
+
+        self::assertSame(
+            [
+                [str_repeat('a', 70000), 0],
+                ['!', 70000],
+                ['é', 70001],
+            ],
+            $zwTokens,
+        );
+    }
+
+    public function testScanFreesMatchBufferWhileBuildingTokens(): void
+    {
+        if (
+            ! function_exists('proc_open')
+            || ! function_exists('proc_close')
+            || ! function_exists('proc_get_status')
+            || ! function_exists('proc_terminate')
+        ) {
+            self::markTestSkipped('proc_open(), proc_close(), proc_get_status(), and proc_terminate() are required to measure isolated scan peak memory.');
+        }
+
+        $autoload = __DIR__ . '/../vendor/autoload.php';
+        $script   = <<<'PHP'
+require $argv[1];
+$lexer = new Doctrine\Tests\Common\Lexer\ConcreteLexer();
+$base = memory_get_usage(false);
+$lexer->setInput(str_repeat('(', 150000));
+$retained = memory_get_usage(false) - $base;
+$peak = memory_get_peak_usage(false) - $base;
+$count = 0;
+while ($lexer->moveNext()) {
+    $count++;
+}
+echo $count . ':' . $retained . ':' . $peak;
+PHP;
+
+        $process = proc_open(
+            [PHP_BINARY, '-d', 'memory_limit=512M', '-r', $script, $autoload],
+            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+        );
+
+        self::assertIsResource($process);
+
+        stream_set_blocking($pipes[1], false);
+        stream_set_blocking($pipes[2], false);
+
+        $stdout   = '';
+        $stderr   = '';
+        $open     = [1 => $pipes[1], 2 => $pipes[2]];
+        $deadline = hrtime(true) + 30_000_000_000;
+        $timedOut = false;
+
+        while ($open !== []) {
+            $remainingNs = $deadline - hrtime(true);
+            if ($remainingNs <= 0) {
+                $timedOut = true;
+                proc_terminate($process);
+                break;
+            }
+
+            $read   = $open;
+            $write  = null;
+            $except = null;
+            $sec    = (int) ($remainingNs / 1_000_000_000);
+            $usec   = (int) (($remainingNs % 1_000_000_000) / 1_000);
+
+            $ready = stream_select($read, $write, $except, $sec, $usec);
+            if ($ready === false || $ready === 0) {
+                continue;
+            }
+
+            foreach ($read as $fd => $stream) {
+                $chunk = fread($stream, 8192);
+                if ($chunk !== false && $chunk !== '') {
+                    if ($fd === 1) {
+                        $stdout .= $chunk;
+                    } else {
+                        $stderr .= $chunk;
+                    }
+                }
+
+                if ($chunk !== false && ! feof($stream)) {
+                    continue;
+                }
+
+                fclose($stream);
+                unset($open[$fd]);
+            }
+        }
+
+        foreach ($open as $stream) {
+            fclose($stream);
+        }
+
+        $status = proc_get_status($process);
+        while (! $timedOut && $status['running']) {
+            if (hrtime(true) >= $deadline) {
+                $timedOut = true;
+                proc_terminate($process);
+                break;
+            }
+
+            usleep(10_000);
+            $status = proc_get_status($process);
+        }
+
+        $exitCode = proc_close($process);
+        if ($status['exitcode'] !== -1) {
+            $exitCode = $status['exitcode'];
+        }
+
+        self::assertFalse($timedOut, 'Subprocess timed out while measuring scan peak memory.');
+        self::assertSame(0, $exitCode, $stderr);
+
+        [$count, $retainedBytes, $peakBytes] = array_map(static fn (string $part): int => (int) $part, explode(':', $stdout));
+        self::assertSame(150000, $count);
+        self::assertGreaterThan(0, $retainedBytes);
+        self::assertLessThan(2.5, $peakBytes / $retainedBytes);
     }
 }
