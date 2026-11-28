@@ -9,12 +9,17 @@ use Doctrine\Common\Lexer\Token;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+use function array_keys;
 use function array_map;
 use function assert;
 use function count;
+use function function_exists;
+use function getrusage;
 use function is_int;
 use function is_numeric;
 use function setlocale;
+use function sort;
+use function str_repeat;
 
 use const LC_ALL;
 
@@ -135,6 +140,235 @@ class AbstractLexerTest extends TestCase
 
         $this->assertFalse($this->concreteLexer->moveNext());
         $this->assertNull($this->concreteLexer->lookahead);
+    }
+
+    public function testResetPositionEdgeCases(): void
+    {
+        // Empty input
+        $this->concreteLexer->setInput('');
+        foreach ([-1, 0, 10] as $offset) {
+            $this->concreteLexer->resetPosition($offset);
+            self::assertFalse($this->concreteLexer->moveNext());
+            self::assertNull($this->concreteLexer->lookahead);
+        }
+
+        // Negative, mid-token, gap, and exact offsets
+        $this->concreteLexer->setInput('price = 10');
+
+        $this->concreteLexer->resetPosition(-5);
+        self::assertTrue($this->concreteLexer->moveNext());
+        self::assertEquals(new Token('price', 'string', 0), $this->concreteLexer->lookahead);
+
+        // Mid-token offset (inside 'price' [0..4]) advances to '=' at offset 6
+        $this->concreteLexer->resetPosition(2);
+        self::assertTrue($this->concreteLexer->moveNext());
+        self::assertEquals(new Token('=', 'operator', 6), $this->concreteLexer->lookahead);
+
+        // Whitespace gap offset (5) advances to '=' at offset 6
+        $this->concreteLexer->resetPosition(5);
+        self::assertTrue($this->concreteLexer->moveNext());
+        self::assertEquals(new Token('=', 'operator', 6), $this->concreteLexer->lookahead);
+
+        // Exact last token offset (8)
+        $this->concreteLexer->resetPosition(8);
+        self::assertTrue($this->concreteLexer->moveNext());
+        self::assertEquals(new Token(10, 'int', 8), $this->concreteLexer->lookahead);
+        self::assertFalse($this->concreteLexer->moveNext());
+
+        // Duplicate offsets from nested capturing groups return the first token at that offset
+        $nestedLexer = new MutableLexer();
+        $nestedLexer->addCatchablePattern('(foo)(bar)');
+        $nestedLexer->setInput('foobar baz');
+
+        $nestedLexer->resetPosition(0);
+        self::assertTrue($nestedLexer->moveNext());
+        self::assertEquals(new Token('foobar', 1, 0), $nestedLexer->lookahead);
+
+        $nestedLexer->resetPosition(3);
+        self::assertTrue($nestedLexer->moveNext());
+        self::assertEquals(new Token('bar', 1, 3), $nestedLexer->lookahead);
+
+        // Backward offsets from lookahead captures preserve first-match emission order
+        $lookaheadLexer = new MutableLexer();
+        $lookaheadLexer->addCatchablePattern('(?=.(.))');
+        $lookaheadLexer->setInput('ab');
+
+        $lookaheadLexer->resetPosition(1);
+        self::assertTrue($lookaheadLexer->moveNext());
+        self::assertEquals(new Token('b', 1, 1), $lookaheadLexer->lookahead);
+
+        $lookaheadLexer->resetPosition(0);
+        self::assertTrue($lookaheadLexer->moveNext());
+        self::assertEquals(new Token('b', 1, 1), $lookaheadLexer->lookahead);
+
+        $lookaheadLexer->resetPosition(2);
+        self::assertFalse($lookaheadLexer->moveNext());
+
+        // Backward offsets from repeated alternation captures preserve first-match emission order
+        $alternationLexer = new MutableLexer();
+        $alternationLexer->addCatchablePattern('(?:(a)|(b))+');
+        $alternationLexer->setInput('ba x');
+
+        $alternationLexer->resetPosition(1);
+        self::assertTrue($alternationLexer->moveNext());
+        self::assertEquals(new Token('a', 1, 1), $alternationLexer->lookahead);
+
+        $alternationLexer->resetPosition(2);
+        self::assertTrue($alternationLexer->moveNext());
+        self::assertEquals(new Token('x', 1, 3), $alternationLexer->lookahead);
+
+        // Reusing a lexer across two different unordered streams clears cached prefix maxima
+        $lookaheadLexer->setInput('cd ef');
+        $lookaheadLexer->resetPosition(4);
+        self::assertTrue($lookaheadLexer->moveNext());
+        self::assertEquals(new Token('f', 1, 4), $lookaheadLexer->lookahead);
+
+        // Repeated parent::scan() calls detect backward offsets and invalidate any cached prefix maxima
+        $multiScanFactory = static function (string ...$catchablePatterns) {
+            return new /** @template-extends AbstractLexer<int, string> */ class ($catchablePatterns) extends AbstractLexer {
+                /** @param string[] $catchablePatterns */
+                public function __construct(private readonly array $catchablePatterns)
+                {
+                }
+
+                public function scanAdditional(string $input): void
+                {
+                    $this->scan($input);
+                }
+
+                /** {@inheritDoc} */
+                protected function getCatchablePatterns(): array
+                {
+                    return $this->catchablePatterns;
+                }
+
+                /** {@inheritDoc} */
+                protected function getNonCatchablePatterns(): array
+                {
+                    return ['\s+'];
+                }
+
+                protected function getType(string &$value): int
+                {
+                    return 1;
+                }
+            };
+        };
+
+        $orderedMultiScan = $multiScanFactory('[a-z]+');
+        $orderedMultiScan->setInput('a b');
+        $orderedMultiScan->scanAdditional('c d');
+        $orderedMultiScan->resetPosition(1);
+        self::assertTrue($orderedMultiScan->moveNext());
+        self::assertEquals(new Token('b', 1, 2), $orderedMultiScan->lookahead);
+
+        $lookaheadMultiScan = $multiScanFactory('(?=.(.))');
+        $lookaheadMultiScan->setInput('ab');
+        $lookaheadMultiScan->resetPosition(1);
+        self::assertTrue($lookaheadMultiScan->moveNext());
+        self::assertEquals(new Token('b', 1, 1), $lookaheadMultiScan->lookahead);
+
+        $lookaheadMultiScan->scanAdditional('xyza');
+        $lookaheadMultiScan->resetPosition(2);
+        self::assertTrue($lookaheadMultiScan->moveNext());
+        self::assertEquals(new Token('z', 1, 2), $lookaheadMultiScan->lookahead);
+
+        // Reusing a lexer across backward-offset, invalid UTF-8, empty, and ordered inputs resets cached state
+        $alternationLexer->setInput("\xE9=10");
+        $alternationLexer->resetPosition(0);
+        self::assertTrue($alternationLexer->moveNext());
+        self::assertEquals(new Token("\xE9=10", 1, 0), $alternationLexer->lookahead);
+        $alternationLexer->resetPosition(1);
+        self::assertFalse($alternationLexer->moveNext());
+
+        $alternationLexer->setInput('');
+        $alternationLexer->resetPosition(0);
+        self::assertFalse($alternationLexer->moveNext());
+
+        $alternationLexer->setInput('x y');
+        $alternationLexer->resetPosition(2);
+        self::assertTrue($alternationLexer->moveNext());
+        self::assertEquals(new Token('y', 1, 2), $alternationLexer->lookahead);
+    }
+
+    public function testResetPositionDoesNotDegradeQuadratically(): void
+    {
+        $this->assertResetPositionSublinear($this->concreteLexer, str_repeat('a=', 8000), 16000);
+
+        $unorderedLexer = new MutableLexer();
+        $unorderedLexer->addCatchablePattern('(?:(a)|(b))+');
+        $this->assertResetPositionSublinear($unorderedLexer, str_repeat('ba ', 4000), 12000);
+    }
+
+    /**
+     * @param AbstractLexer<T, V> $lexer
+     *
+     * @template T of int|string
+     * @template V of int|string
+     */
+    private function assertResetPositionSublinear(AbstractLexer $lexer, string $input, int $expectedTokens): void
+    {
+        $lexer->setInput($input);
+
+        $firstOffsetToValue = [];
+        $tokenCount         = 0;
+        while ($lexer->moveNext()) {
+            $token = $lexer->lookahead;
+            if (! isset($firstOffsetToValue[$token->position])) {
+                $firstOffsetToValue[$token->position] = $token->value;
+            }
+
+            $tokenCount++;
+        }
+
+        self::assertSame($expectedTokens, $tokenCount);
+
+        $offsets = array_keys($firstOffsetToValue);
+        sort($offsets);
+
+        $cpuBefore  = function_exists('getrusage') ? getrusage() : false;
+        $mismatches = 0;
+
+        foreach ($offsets as $offset) {
+            $lexer->resetPosition($offset);
+
+            if (
+                $lexer->moveNext()
+                && $lexer->lookahead->position === $offset
+                && $lexer->lookahead->value === $firstOffsetToValue[$offset]
+            ) {
+                continue;
+            }
+
+            $mismatches++;
+        }
+
+        $cpuAfter = function_exists('getrusage') ? getrusage() : false;
+
+        self::assertSame(0, $mismatches);
+
+        if ($cpuBefore === false || $cpuAfter === false) {
+            return;
+        }
+
+        assert(
+            is_int($cpuBefore['ru_utime.tv_sec'])
+            && is_int($cpuBefore['ru_utime.tv_usec'])
+            && is_int($cpuBefore['ru_stime.tv_sec'])
+            && is_int($cpuBefore['ru_stime.tv_usec'])
+            && is_int($cpuAfter['ru_utime.tv_sec'])
+            && is_int($cpuAfter['ru_utime.tv_usec'])
+            && is_int($cpuAfter['ru_stime.tv_sec'])
+            && is_int($cpuAfter['ru_stime.tv_usec']),
+        );
+
+        $secDiff    = $cpuAfter['ru_utime.tv_sec'] - $cpuBefore['ru_utime.tv_sec']
+            + $cpuAfter['ru_stime.tv_sec'] - $cpuBefore['ru_stime.tv_sec'];
+        $usecDiff   = $cpuAfter['ru_utime.tv_usec'] - $cpuBefore['ru_utime.tv_usec']
+            + $cpuAfter['ru_stime.tv_usec'] - $cpuBefore['ru_stime.tv_usec'];
+        $cpuSeconds = $secDiff + $usecDiff / 1_000_000;
+
+        self::assertLessThan(0.5, $cpuSeconds);
     }
 
     /** @phpstan-param list<Token<string, string|int>>  $expectedTokens */

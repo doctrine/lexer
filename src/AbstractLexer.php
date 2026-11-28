@@ -9,6 +9,7 @@ use UnitEnum;
 
 use function count;
 use function implode;
+use function intdiv;
 use function preg_split;
 use function sprintf;
 use function substr;
@@ -69,6 +70,19 @@ abstract class AbstractLexer
     private string|null $regex = null;
 
     /**
+     * Whether scanned token offsets are non-decreasing.
+     */
+    private bool $tokenOffsetsOrdered = true;
+
+    /**
+     * Running maximum of token offsets, built lazily when scanned offsets are
+     * not monotonic so lower-bound binary search still matches emission order.
+     *
+     * @var list<int>|null
+     */
+    private array|null $prefixMaxTokenOffsets = null;
+
+    /**
      * Sets the input data to be tokenized.
      *
      * The Lexer is immediately reset and the new input tokenized.
@@ -80,8 +94,10 @@ abstract class AbstractLexer
      */
     public function setInput(string $input)
     {
-        $this->input  = $input;
-        $this->tokens = [];
+        $this->input                 = $input;
+        $this->tokens                = [];
+        $this->tokenOffsetsOrdered   = true;
+        $this->prefixMaxTokenOffsets = null;
 
         $this->reset();
         $this->scan($input);
@@ -126,18 +142,57 @@ abstract class AbstractLexer
     /**
      * Finds the index of the first token at or after the given offset.
      *
-     * Token offsets are strictly increasing, so a linear scan suffices.
+     * Uses lower-bound binary search in O(log n). When preg_split() emitted
+     * backward offsets (e.g. from lookahead or repeated alternation captures),
+     * searches the lazily built running-maximum offset array instead, which
+     * preserves exact first-match emission order.
      * Returns one past the end when there is no such token.
      */
     private function findTokenIndexAtOrAfterOffset(int $offset): int
     {
-        foreach ($this->tokens as $index => $token) {
-            if ($token->position >= $offset) {
-                return $index;
+        $low  = 0;
+        $high = count($this->tokens);
+
+        if ($this->tokenOffsetsOrdered) {
+            while ($low < $high) {
+                $mid = $low + intdiv($high - $low, 2);
+
+                if ($this->tokens[$mid]->position < $offset) {
+                    $low = $mid + 1;
+                } else {
+                    $high = $mid;
+                }
+            }
+
+            return $low;
+        }
+
+        if ($this->prefixMaxTokenOffsets === null) {
+            $prefixMax = [];
+            $maxOffset = -1;
+
+            foreach ($this->tokens as $token) {
+                if ($token->position > $maxOffset) {
+                    $maxOffset = $token->position;
+                }
+
+                $prefixMax[] = $maxOffset;
+            }
+
+            $this->prefixMaxTokenOffsets = $prefixMax;
+        }
+
+        while ($low < $high) {
+            $mid = $low + intdiv($high - $low, 2);
+
+            if ($this->prefixMaxTokenOffsets[$mid] < $offset) {
+                $low = $mid + 1;
+            } else {
+                $high = $mid;
             }
         }
 
-        return count($this->tokens);
+        return $low;
     }
 
     /**
@@ -280,11 +335,18 @@ abstract class AbstractLexer
             $firstMatch = $match[0];
             $type       = $this->getType($firstMatch);
 
+            $tokenCount = count($this->tokens);
+            if ($tokenCount > 0 && $match[1] < $this->tokens[$tokenCount - 1]->position) {
+                $this->tokenOffsetsOrdered = false;
+            }
+
             $this->tokens[] = new Token(
                 $firstMatch,
                 $type,
                 $match[1],
             );
+
+            $this->prefixMaxTokenOffsets = null;
         }
     }
 
