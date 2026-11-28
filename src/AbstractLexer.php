@@ -275,7 +275,34 @@ abstract class AbstractLexer
             $matches = [[$input, 0]];
         }
 
-        foreach ($matches as $match) {
+        // Indexed iteration avoids foreach's refcount copy-on-write so unsetting each
+        // consumed entry frees the match array incrementally while $this->tokens grows.
+        // Skip indexed unsetting for tiny match lists to avoid per-entry unset overhead.
+        $matchCount = count($matches);
+        if ($matchCount < 256) {
+            foreach ($matches as $match) {
+                // Must remain before 'value' assignment since it can change content
+                $firstMatch = $match[0];
+                $type       = $this->getType($firstMatch);
+
+                $this->tokens[] = new Token(
+                    $firstMatch,
+                    $type,
+                    $match[1],
+                );
+            }
+
+            return;
+        }
+
+        for ($i = 0; $i < $matchCount; $i++) {
+            if (! isset($matches[$i])) {
+                continue;
+            }
+
+            $match = $matches[$i];
+            unset($matches[$i]);
+
             // Must remain before 'value' assignment since it can change content
             $firstMatch = $match[0];
             $type       = $this->getType($firstMatch);
